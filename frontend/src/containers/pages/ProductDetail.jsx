@@ -20,6 +20,7 @@ const ProductDetail = ({
     const productId = params.productId;
 
     useEffect(() => {
+      window.scrollTo(0, 0)
         get_product(productId)
         get_related_products(productId)
     }, []);

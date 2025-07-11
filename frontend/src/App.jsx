@@ -12,6 +12,7 @@ import Loing from './containers/auth/Login';
 import ResetPassword from './containers/auth/ResetPassword';
 import ResetPasswordConfirm from './containers/auth/ResetPasswordConfirm';
 import Shop from './containers/Shop';
+import ProductDetail from './containers/pages/ProductDetail';
 
 
 
@@ -35,6 +36,7 @@ function App() {
           <Route exact path="/password/reset/confirm/:uid/:token" element={<ResetPasswordConfirm/>}></Route>
 
           <Route exact path="/shop" element={<Shop/>}></Route>
+          <Route exact path="/product/:productId" element={<ProductDetail/>}></Route>
         </Routes>
       </Router>
 

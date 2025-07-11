@@ -1,30 +1,4 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
-const products = [
-  {
-    id: 1,
-    name: 'Black Basic Tee',
-    price: '$32',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-03-favorite-01.jpg',
-    imageAlt: "Model wearing women's black cotton crewneck tee.",
-  },
-  // More products...
-]
+import { Link } from "react-router-dom"
 
 export default function ProductsSold({
   data
@@ -40,30 +14,33 @@ export default function ProductsSold({
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-y-10 sm:grid-cols-3 sm:gap-y-0 sm:gap-x-6 lg:gap-x-8">
-          {products.map((product) => (
+          {data && 
+          data !== null &&
+          data !== undefined &&
+          data.map((product) => (
             <div key={product.id} className="group relative">
               <div className="w-full h-96 rounded-lg overflow-hidden group-hover:opacity-75 sm:h-auto sm:aspect-w-2 sm:aspect-h-3">
                 <img
-                  src={product.imageSrc}
-                  alt={product.imageAlt}
+                  src={product.photo}
+                  alt=""
                   className="w-full h-full object-center object-cover"
                 />
               </div>
               <h3 className="mt-4 text-base font-semibold text-gray-900">
-                <a href={product.href}>
+                <Link to="/">
                   <span className="absolute inset-0" />
                   {product.name}
-                </a>
+                </Link>
               </h3>
-              <p className="mt-1 text-sm text-gray-500">{product.price}</p>
+              <p className="mt-1 text-sm text-gray-500">${product.price}</p>
             </div>
           ))}
         </div>
 
         <div className="mt-6 sm:hidden">
-          <a href="#" className="block text-sm font-semibold text-indigo-600 hover:text-indigo-500">
-            Browse all favorites<span aria-hidden="true"> &rarr;</span>
-          </a>
+          <Link to="#" className="block text-sm font-semibold text-indigo-600 hover:text-indigo-500">
+            Ver mas productos<span aria-hidden="true"> &rarr;</span>
+          </Link>
         </div>
       </div>
     </div>

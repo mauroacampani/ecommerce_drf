@@ -195,6 +195,7 @@ export const get_filtered_products = (category_id, price_range, sort_by, order) 
 
 
 export const get_search_products = (search, category_id) => async dispatch => {
+    
     const config = {
         headres: {
             'Accept': 'application/json',
@@ -212,6 +213,7 @@ export const get_search_products = (search, category_id) => async dispatch => {
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/search`, body, config);
 
         if (res.status == 200 && !res.data.error){
+        
             dispatch({
                 type: SEARCH_PRODUCTS_SUCCESS,
                 payload: res.data

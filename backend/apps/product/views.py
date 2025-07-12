@@ -82,9 +82,10 @@ class ListSearchView(APIView):
 
     def post(self, request, format=None):
         data = self.request.data
-
+        
         try:
             category_id = int(data['category_id'])
+           
         except:
             return Response(
                 {'error': 'Categoria id debe ser un integer'},
@@ -141,7 +142,7 @@ class ListSearchView(APIView):
 
         
         search_results = ProductSerializer(search_results, many=True)
-        return Response({'search_pruducts': search_results.data}, status=status.HTTP_200_OK)
+        return Response({'search_products': search_results.data}, status=status.HTTP_200_OK)
     
 
 

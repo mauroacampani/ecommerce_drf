@@ -1,10 +1,13 @@
 'use client'
-import { Link, Navigate } from 'react-router'
-import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import Alert from '../../components/Alert'
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { logout } from '../../redux/actions/auth';
+import SearchBox from './SearchBox';
+import { get_categories } from '../../redux/actions/categories';
+import { get_search_products } from '../../redux/actions/products';
 
 import {
   Dialog,
@@ -44,10 +47,45 @@ const callsToAction = [
 function Navbar({
   isAuthenticated,
   user,
-  logout
+  logout,
+  get_categories,
+  categories,
+  get_search_products
 }) {
-
+  const navigate = useNavigate();
   const [redirect, setRedirect] = useState(false);
+
+  // const [render, setRender] = useState(false)
+
+  const [formData, setFormData] = useState({
+    category_id: 0,
+    search: ''
+  });
+
+  const { category_id, search } = formData;
+
+  useEffect(() => {
+    get_categories()
+  }, [])
+
+  const onChange = e => {
+  const { name, value } = e.target;
+
+  setFormData({
+    ...formData,
+    [name]: name === 'category_id' ? Number(value) : value
+  });
+};
+
+  const onSubmit = e => {
+      e.preventDefault()
+      get_search_products(search, category_id)
+      navigate('/search');
+      
+    }
+
+
+                                    
 
   const logoutHandler = () => {
     logout()
@@ -175,10 +213,7 @@ function Navbar({
         </div>
         <PopoverGroup className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
-              Product
-              <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
-            </PopoverButton>
+            
 
             <PopoverPanel
               transition
@@ -218,15 +253,17 @@ function Navbar({
             </PopoverPanel>
           </Popover>
 
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
-            Features
-          </a>
-          <Link to="/shop" className="text-sm/6 font-semibold text-gray-900">
+          
+          <Link to="/shop" className="mt-2 text-sm/6 font-semibold text-gray-900">
             Tienda
           </Link>
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
-            Company
-          </a>
+          
+          <SearchBox 
+          search={search}
+          onChange={onChange}
+          onSubmit={onSubmit}
+          categories={categories}></SearchBox>
+          
         </PopoverGroup>
         <div className='flex items-center md:ml-12'>
 
@@ -317,8 +354,11 @@ function Navbar({
 
 const mapStateToProps = state => ({
   isAuthenticated: state.Auth.isAuthenticated,
-  user: state.Auth.user
+  user: state.Auth.user, 
+  categories: state.Categories.categories,
 })
 export default connect(mapStateToProps, {
- logout
+ logout,
+ get_categories,
+ get_search_products
 }) (Navbar);

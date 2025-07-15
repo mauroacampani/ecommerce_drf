@@ -1,5 +1,5 @@
 'use client'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Alert from '../../components/Alert'
 import { Fragment } from 'react';
@@ -95,8 +95,10 @@ function Navbar({
     
   }
 
-  // if (redirect)
-  // return <Navigate to='/'></Navigate>
+  if (redirect) {
+    window.location.reload(false)
+    return <Navigate to='/' />
+  }
 
   const authLinks = (
     <Menu as="div" className="relative inline-block text-left">
@@ -353,8 +355,9 @@ function Navbar({
                 <Link to="/cart">
           
           <ShoppingCartIcon className="h-8 w-8 text-gray-400 cursor-pointer mr-4"/>
+          <span className="text-xs absolute top-1 mt-4 ml-5 bg-red-500 text-white font-semibold rounded-full px-2 text-center">{total_items}</span>
           </Link>
-        {/* {isAuthenticated ? authLinks : guestLinks} */}
+          {isAuthenticated ? authLinks : guestLinks} 
               </div>
             </div>
           </div>

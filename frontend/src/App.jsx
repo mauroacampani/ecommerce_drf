@@ -15,6 +15,8 @@ import Shop from './containers/Shop';
 import ProductDetail from './containers/pages/ProductDetail';
 
 import Search from './containers/pages/Search';
+import Cart from './containers/pages/Cart';
+
 
 
 function App() {
@@ -26,7 +28,9 @@ function App() {
       <Router>
         <Routes>
           <Route path="*" element={<Error404/>}></Route>
+
           <Route exact path="/" element={<Home/>}></Route>
+          <Route exact path="/cart" element={<Cart/>}></Route>
 
           {/* Authentication */}
           <Route exact path="/signup" element={<Signup/>}></Route>

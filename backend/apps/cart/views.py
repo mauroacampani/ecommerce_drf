@@ -37,41 +37,54 @@ class AddItemView(APIView):
     def post(self, request, format=None):
         user = self.request.user
         data = self.request.data
-
+        
         try:
+            
             product_id = int(data['product_id'])
         except:
-            return Response({'error': 'Producto Id de ser un integer'},
-                            status=status.HTTP_404_NOT_FOUND)
-        
+            return Response(
+                {'error': 'Product ID must be an integer'},
+                status=status.HTTP_404_NOT_FOUND)
+
         count = 1
 
         try:
+            
             if not Product.objects.filter(id=product_id).exists():
-                return Response({'error': 'El producto no existe'},
-                            status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    {'error': 'This product does not exist'},
+                    status=status.HTTP_404_NOT_FOUND)
             
             product = Product.objects.get(id=product_id)
-            cart = Cart.objects.get(user=user)
 
+            cart = Cart.objects.get(user=user)
+       
             if CartItem.objects.filter(cart=cart, product=product).exists():
-                return Response({'error': 'Item ya esta en el carrito'},
-                            status=status.HTTP_404_NOT_FOUND)
-            
+                
+                return Response(
+                    {'error': 'Item is already in cart'},
+                    status=status.HTTP_409_CONFLICT)
+
             if int(product.quantity) > 0:
-                CartItem.objects.create(product = product, cart=cart, count=count)
+                
+                CartItem.objects.create(
+                    product=product, cart=cart, count=count
+                )
 
                 if CartItem.objects.filter(cart=cart, product=product).exists():
-                    total_item = int(cart.total_items) + 1
-                    Cart.objects.filter(user=user).update(total_item=total_item)
-
-                    cart_items = CartItem.objects.order_by('product').filter(cart=cart)
+                    total_items = int(cart.total_items) + 1
+                    Cart.objects.filter(user=user).update(
+                        total_items=total_items
+                    )
+                
+                    cart_items = CartItem.objects.order_by(
+                    'product').filter(cart=cart)
 
                     result = []
 
                     for cart_item in cart_items:
-                        item = {}
 
+                        item = {}
                         item['id'] = cart_item.id
                         item['count'] = cart_item.count
                         product = Product.objects.get(id=cart_item.product.id)
@@ -82,13 +95,14 @@ class AddItemView(APIView):
                         result.append(item)
 
                     return Response({'cart': result}, status=status.HTTP_201_CREATED)
-                
                 else:
-                    return Response({'error': 'No hay stockl de este item'},
-                            status=status.HTTP_200_OK)
+                    return Response(
+                        {'error': 'Not enough of this item in stock'},
+                        status=status.HTTP_200_OK)
         except:
-            return Response({'error': 'Algo salió mal al recuperar los artículos del carrito'},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {'error': 'Something went wrong when adding item to cart'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
 class GetTotalView(APIView):
@@ -101,7 +115,7 @@ class GetTotalView(APIView):
 
             total_cost = 0.0
             total_compare_cost = 0.0
-
+          
             if cart_items.exists():
                 for cart_item in cart_items:
                     total_cost += (float(cart_item.product.price) * float(cart_item.count))

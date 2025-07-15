@@ -28,8 +28,9 @@ import {
   FingerPrintIcon,
   SquaresPlusIcon,
   XMarkIcon,
+  
 } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, PhoneIcon, PlayCircleIcon, ShoppingCartIcon } from '@heroicons/react/20/solid'
 import { connect } from 'react-redux'
 
 const products = [
@@ -202,6 +203,14 @@ function Navbar({
           </a>
         </div>
         <div className="flex lg:hidden">
+          <Link
+            to="/cart"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+          >
+            <span className="sr-only">Open main menu</span>
+            <ShoppingCartIcon className="h-6 w-6 text-gray-400 cursor-pointer mr-4" aria-hidden="true" />
+          </Link>
+          
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
@@ -211,6 +220,7 @@ function Navbar({
             <Bars3Icon aria-hidden="true" className="size-6" />
           </button>
         </div>
+
         <PopoverGroup className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
             
@@ -264,12 +274,17 @@ function Navbar({
           onSubmit={onSubmit}
           categories={categories}></SearchBox>
           
-        </PopoverGroup>
-        <div className='flex items-center md:ml-12'>
-
-        
+          <div className='flex items-center md:ml-12'>
+          <Link to="/cart">
+          
+          <ShoppingCartIcon className="h-8 w-8 text-gray-400 cursor-pointer mr-4"/>
+          </Link>
         {isAuthenticated ? authLinks : guestLinks}
         </div>
+        </PopoverGroup>
+       
+  
+        
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-50" />
@@ -333,12 +348,11 @@ function Navbar({
                 </a>
               </div>
               <div className="py-6">
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </a>
+                <Link to="/cart">
+          
+          <ShoppingCartIcon className="h-8 w-8 text-gray-400 cursor-pointer mr-4"/>
+          </Link>
+        {/* {isAuthenticated ? authLinks : guestLinks} */}
               </div>
             </div>
           </div>

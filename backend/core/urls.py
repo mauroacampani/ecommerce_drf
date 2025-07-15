@@ -3,7 +3,6 @@ from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
-import os
 
 urlpatterns = [
     path('auth/', include('djoser.urls')),
@@ -12,6 +11,7 @@ urlpatterns = [
 
     path('api/category/', include('apps.category.urls')),
     path('api/product/', include('apps.product.urls')),
+    path('api/cart/', include('apps.cart.urls')),
 
     path('admin/', admin.site.urls),
 ]

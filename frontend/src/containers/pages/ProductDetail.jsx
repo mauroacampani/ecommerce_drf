@@ -2,19 +2,41 @@ import Layout from "../../hocs/Layout";
 import { useParams } from "react-router";
 import { connect } from "react-redux";
 import { get_product, get_related_products } from "../../redux/actions/products";
-import { useEffect } from "react";
-import { RadioGroup, Disclosure} from '@headlessui/react';
-import { HeartIcon, StarIcon, MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
+import { useEffect, useState } from "react";
+import { RadioGroup } from '@headlessui/react';
+import { HeartIcon } from '@heroicons/react/20/solid'
 import ImageGallery from "../../components/product/ImagenGallery";
-
+import { get_items, add_item, get_total, get_item_total } from '../../redux/actions/cart'
+import ClipLoader from "react-spinners/ClipLoader";
+import { useNavigate } from "react-router-dom";
 
 const ProductDetail = ({
     get_product,
     get_related_products,
-    product
+    product,
+    get_items, 
+    add_item, 
+    get_total, 
+    get_item_total
 }) =>{
 
     // const [selectedColor, setSelectedColor] = useState(product.colors[0])
+
+    const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
+
+    const addToCart = async () => {
+      if (product && product !== null && product !== undefined && product.quantity > 0) {
+        setLoading(true);
+        await add_item(product);
+        await get_items();
+        await get_total();
+        await get_item_total();
+        setLoading(false);
+        navigate('/cart')
+      }
+    }
 
     const params = useParams();
     const productId = params.productId;
@@ -53,7 +75,7 @@ const ProductDetail = ({
 
            
 
-            <form className="mt-6">
+            <div className="mt-6">
               {/* Colors */}
                <div>
                 <h3 className="text-sm text-gray-600">Color</h3>
@@ -82,14 +104,38 @@ const ProductDetail = ({
                   </div>
                 </RadioGroup>
               </div>
-
-              <div className="mt-10 flex sm:flex-col1">
+                <p className="mt-4">
+                  {
+                    product &&
+                    product !== null &&
+                    product !== undefined &&
+                    product.quantity > 0 ? (
+                      <span className="text-green-500">
+                        En stock
+                      </span>
+                    ) : (
+                      <span className="text-red-500">
+                        Sin stock
+                      </span>
+                    )
+                  }
+                </p>
+              <div className="mt-4 flex sm:flex-col1">
+                {loading ? 
                 <button
-                  type="submit"
+                  
                   className="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full"
                 >
-                  Add to bag
+                  <ClipLoader color="#fff" loading={true} size={20} />
+                </button> :
+                <button
+                  onClick={addToCart}
+                  className="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full"
+                >
+                  Agregar al carrito
                 </button>
+                }
+
 
                 <button
                   type="button"
@@ -99,7 +145,7 @@ const ProductDetail = ({
                   <span className="sr-only">Add to favorites</span>
                 </button>
               </div>
-            </form>
+            </div>
 
           </div>
         </div>
@@ -115,5 +161,9 @@ const mapStateToProps = state => ({
 })
 export default connect(mapStateToProps, {
     get_product,
-    get_related_products
+    get_related_products,
+    get_items, 
+    add_item, 
+    get_total, 
+    get_item_total
 }) (ProductDetail);

@@ -4,6 +4,7 @@ import Alert from './alert';
 import Categories from './categories';
 import Products from './products';
 import Cart from './cart';
+import Shipping from './shipping';
 
 
 // Ejemplo: un reducer vacío
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   Alert,
   Categories,
   Products,
-  Cart
+  Cart,
+  Shipping
 })
 
 export default rootReducer

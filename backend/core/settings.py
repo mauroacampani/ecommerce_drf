@@ -5,6 +5,7 @@ from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 env = environ.Env()
 environ.Env.read_env()
 
@@ -31,7 +32,7 @@ DJANGO_APPS = [
 
 PROJECT_APPS=['apps.user']
 
-ECOMMERCE_APPS=['apps.category', 'apps.product', 'apps.cart', 'apps.shipping', 'apps.orders']
+ECOMMERCE_APPS=['apps.category', 'apps.product', 'apps.cart', 'apps.shipping', 'apps.orders', 'apps.payment']
 
 THIRD_PARTY_APPS=[
     'corsheaders',
@@ -225,6 +226,11 @@ DJOSER = {
         'user_delete': 'djoser.serializers.UserDeleteSerializer',
     },
 }
+
+BT_ENVIRONMENT=env('BT_ENVIRONMENT')
+BT_MERCHANT_ID=env('BT_MERCHANT_ID')
+BT_PUBLIC_KEY=env('BT_PUBLIC_KEY')
+BT_PRIVATE_KEY=env('BT_PRIVATE_KEY')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

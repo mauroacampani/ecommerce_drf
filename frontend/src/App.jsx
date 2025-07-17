@@ -17,6 +17,7 @@ import ProductDetail from './containers/pages/ProductDetail';
 import Search from './containers/pages/Search';
 import Cart from './containers/pages/Cart';
 import Checkout from './containers/pages/Checkout';
+import ThankYou from './containers/pages/ThankYou';
 
 
 
@@ -33,6 +34,8 @@ function App() {
           <Route exact path="/" element={<Home/>}></Route>
           <Route exact path="/cart" element={<Cart/>}></Route>
           <Route exact path='/checkout' element={<Checkout/>}/>
+
+          <Route exact path='/thankyou' element={<ThankYou/>}/>
 
           {/* Authentication */}
           <Route exact path="/signup" element={<Signup/>}></Route>

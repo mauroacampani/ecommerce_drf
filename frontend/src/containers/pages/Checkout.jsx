@@ -1,13 +1,16 @@
 import Layout from "../../hocs/Layout";
 import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { CheckIcon, ClockIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
 import CartItem from "../../components/cart/CartItem";
 import { useState, useEffect } from "react";
 import { update_item, remove_item } from '../../redux/actions/cart'
 import { setAlert } from "../../redux/actions/alert";
 import { get_shipping_options } from '../../redux/actions/shipping';
-
+import { refresh } from "../../redux/actions/auth";
+import { get_payment_total, get_client_token, process_payment } from '../../redux/actions/payment';
+import DropIn from 'braintree-web-drop-in-react';
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Checkout = ({
     get_shipping_options,

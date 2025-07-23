@@ -11,6 +11,8 @@ import { refresh } from "../../redux/actions/auth";
 import { get_payment_total, get_client_token, process_payment } from '../../redux/actions/payment';
 import DropIn from 'braintree-web-drop-in-react';
 import ClipLoader from "react-spinners/ClipLoader";
+import { countries } from '../../helpers/fixedCountries';
+import ShippingForm from "../../components/checkout/ShippingForm";
 
 const Checkout = ({
     get_shipping_options,
@@ -19,7 +21,21 @@ const Checkout = ({
     remove_item,
     update_item,
     setAlert, 
-    shipping
+    shipping,
+    get_payment_total, 
+    get_client_token, 
+    process_payment,
+    refresh,
+    user,
+    total_items,
+    clientToken,
+    made_payment,
+    loading,
+    original_price,
+    total_amount,
+    total_compare_amount,
+    estimated_tax,
+    shipping_cost
 }) => {
 
     const [formData, setFormData] = useState({
@@ -46,9 +62,7 @@ const Checkout = ({
         city,
         state_province_region,
         postal_zip_code,
-        country_region,
         telephone_number,
-        coupon_name,
         shipping_id,
     } = formData;
 
@@ -79,11 +93,23 @@ const Checkout = ({
         }
     };
 
+    // const renderPaymentInfo = () = {
+
+    // };
+
 
     useEffect(() => {
         window.scrollTo(0, 0)
         get_shipping_options()
     }, []);
+
+    useEffect(() => {
+        get_client_token()
+    }, [user]);
+
+    useEffect(() => {
+        get_payment_total(shipping_id, '')
+    }, [shipping_id]);
 
     const [render, setRender] = useState(false);
 
@@ -142,51 +168,27 @@ const Checkout = ({
           </section>
 
           {/* Order summary */}
-          <section
-            aria-labelledby="summary-heading"
-            className="mt-16 bg-gray-50 rounded-lg px-4 py-6 sm:p-6 lg:p-8 lg:mt-0 lg:col-span-5"
-          >
-            <h2 id="summary-heading" className="text-lg font-medium text-gray-900">
-              Order summary
-            </h2>
+          <ShippingForm
+              full_name={full_name}
+              address_line_1={address_line_1}
+              address_line_2={address_line_2}
+              city={city}
+              state_province_region={state_province_region}
+              postal_zip_code={postal_zip_code}
+              telephone_number={telephone_number}
+              countries={countries}
+              onChange={onChange}
+              user={user}
+              renderShipping={renderShipping}
+              total_amount={total_amount}
+              total_compare_amount={total_compare_amount}
+              estimated_tax={estimated_tax}
+              shipping_cost={shipping_cost}
+              shipping_id={shipping_id}
+              shipping={shipping}
+            />
 
-            <dl className="mt-6 space-y-4">
-              {renderShipping()}
-              <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                <dt className="flex items-center text-sm text-gray-600">
-                  <span>Shipping estimate</span>
-                  <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Learn more about how shipping is calculated</span>
-                    <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
-                  </a>
-                </dt>
-                <dd className="text-sm font-medium text-gray-900">$5.00</dd>
-              </div>
-              <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                <dt className="flex text-sm text-gray-600">
-                  <span>Tax estimate</span>
-                  <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Learn more about how tax is calculated</span>
-                    <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
-                  </a>
-                </dt>
-                <dd className="text-sm font-medium text-gray-900">$8.32</dd>
-              </div>
-              <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                <dt className="text-base font-medium text-gray-900">Order total</dt>
-                <dd className="text-base font-medium text-gray-900">$112.32</dd>
-              </div>
-            </dl>
-
-            <div className="mt-6">
-              <button
-                type="submit"
-                className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-              >
-                Checkout
-              </button>
-            </div>
-          </section>
+          
         </div>
       </div>
     </div>
@@ -195,13 +197,27 @@ const Checkout = ({
 }
 const mapStateToProps = state => ({
  isAuthenticated: state.Auth.isAuthenticated,
+ user: state.Auth.user,
  items: state.Cart.items,
- shipping: state.Shipping.shipping
+ shipping: state.Shipping.shipping,
+ total_items: state.Cart.total_items,
+ clientToken: state.Payment.clientToken,
+ made_payment: state.Payment.made_payment,
+ loading: state.Payment.loading,
+ original_price: state.Payment.original_price,
+ total_amount: state.Payment.total_amount,
+ total_compare_amount: state.Payment.total_compare_amount,
+ estimated_tax: state.Payment.estimated_tax,
+ shipping_cost: state.Payment.shipping_cost
+
 })
 export default connect(mapStateToProps, {
     get_shipping_options,
     remove_item,
     update_item,
-    setAlert
-    
+    setAlert,
+    get_payment_total, 
+    get_client_token, 
+    process_payment,
+    refresh
 }) (Checkout);

@@ -57,6 +57,7 @@ export const get_client_token = () => async dispatch => {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/payment/get-token`, config);
 
         if (res.status === 200) {
+           
             dispatch({
                 type: LOAD_BT_TOKEN_SUCCESS,
                 payload: res.data
@@ -87,12 +88,12 @@ export const process_payment = (
     telephone_number
 ) => async dispatch => {
     const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `JWT ${localStorage.getItem('access')}`,
-            }
-        };
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${localStorage.getItem('access')}`
+        }
+    };
 
     const body = JSON.stringify({
         nonce,
@@ -113,30 +114,28 @@ export const process_payment = (
 
     try {
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/payment/make-payment`, body, config);
-
-        if (res.status === 200 && res.data.success){
+        if (res.status === 200 && res.data.success) {
             dispatch({
                 type: PAYMENT_SUCCESS
             });
             dispatch(setAlert(res.data.success, 'green'));
             dispatch(get_item_total());
-        }else{
+        } else {
             dispatch({
                 type: PAYMENT_FAIL
             });
             dispatch(setAlert(res.data.error, 'red'));
         }
-    } catch (error) {
+    } catch(err) {
         dispatch({
             type: PAYMENT_FAIL
         });
-        dispatch(setAlert('Error al procesar el pago', 'red'))
+        dispatch(setAlert('Error processing payment', 'red'));
     }
 
     dispatch({
         type: REMOVE_PAYMENT_LOADING
     });
-
     window.scrollTo(0, 0);
 }
 

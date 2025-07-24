@@ -1,6 +1,6 @@
 import Layout from "../../hocs/Layout";
 import { connect } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
 import CartItem from "../../components/cart/CartItem";
 import { useState, useEffect } from "react";
@@ -9,10 +9,11 @@ import { setAlert } from "../../redux/actions/alert";
 import { get_shipping_options } from '../../redux/actions/shipping';
 import { refresh } from "../../redux/actions/auth";
 import { get_payment_total, get_client_token, process_payment } from '../../redux/actions/payment';
-import DropIn from 'braintree-web-drop-in-react';
+// import DropIn from 'braintree-web-drop-in-react';
 import ClipLoader from "react-spinners/ClipLoader";
 import { countries } from '../../helpers/fixedCountries';
 import ShippingForm from "../../components/checkout/ShippingForm";
+import DropIn from "../../components/checkout/DropIn";
 
 const Checkout = ({
     get_shipping_options,
@@ -45,15 +46,15 @@ const Checkout = ({
         city: '',
         state_province_region: '',
         postal_zip_code: '',
-        country_region: 'Argentina',
+        country_region: 'Peru',
         telephone_number: '',
         coupon_name: '',
         shipping_id: 0,
     })
 
-    // const [data, setData] = useState({
-    //     instance: {}
-    // });
+
+    const [instance, setInstance] = useState(null);
+
 
     const { 
         full_name,
@@ -62,11 +63,42 @@ const Checkout = ({
         city,
         state_province_region,
         postal_zip_code,
+        country_region,
         telephone_number,
         shipping_id,
     } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    const buy = async e => {
+    e.preventDefault();
+    try {
+        if (!instance) {
+            setAlert('No se pudo inicializar el pago.', 'red');
+            return;
+        }
+
+        const { nonce } = await instance.requestPaymentMethod();
+        
+        process_payment(
+            nonce,
+            shipping_id,
+            full_name,
+            address_line_1,
+            address_line_2,
+            city,
+            state_province_region,
+            postal_zip_code,
+            country_region,
+            telephone_number
+            
+        );
+    } catch (err) {
+        console.error('Error al procesar el pago:', err);
+        setAlert('Error al procesar el pago.', 'red');
+    }
+};
+    
 
     const renderShipping = () => {
         if (shipping && shipping !== null && shipping !== undefined) {
@@ -93,9 +125,52 @@ const Checkout = ({
         }
     };
 
-    // const renderPaymentInfo = () = {
+  const renderPaymentInfo = () => {
+  if (!clientToken) {
+    if (!isAuthenticated) {
+      return (
+        <Link
+          to="/login"
+          className="w-full bg-gray-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-gray-500"
+        >
+          Login
+        </Link>
+      );
+    } else {
+      return (
+        <button
+          className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+        >
+          <ClipLoader color="#fff" loading={true} size={20} />
+        </button>
+      );
+    }
+  } else {
+    return (
+      <>
+      
+ <DropIn clientToken={clientToken} setInstance={setInstance} />
 
-    // };
+        <div className="mt-6">
+          {loading ? (
+            <button
+              className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+            >
+              <ClipLoader color="#fff" loading={true} size={20} />
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="w-full bg-green-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-green-500"
+            >
+              Place Order
+            </button>
+          )}
+        </div>
+      </>
+    );
+  }
+};
 
 
     useEffect(() => {
@@ -150,6 +225,8 @@ const Checkout = ({
         )
     }
 
+    if (made_payment)
+        return <Navigate to='/thankyou' />;
 
     return (
         <Layout>
@@ -179,6 +256,7 @@ const Checkout = ({
               countries={countries}
               onChange={onChange}
               user={user}
+              buy={buy}
               renderShipping={renderShipping}
               total_amount={total_amount}
               total_compare_amount={total_compare_amount}
@@ -186,8 +264,12 @@ const Checkout = ({
               shipping_cost={shipping_cost}
               shipping_id={shipping_id}
               shipping={shipping}
+              renderPaymentInfo={renderPaymentInfo}
+              clientToken={clientToken}
+
             />
 
+       
           
         </div>
       </div>

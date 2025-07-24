@@ -5,4 +5,12 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(),tailwindcss()],
+  optimizeDeps: {
+    include: ['braintree-web-drop-in-react']
+  },
+  build: {
+    commonjsOptions: {
+      include: [/braintree-web-drop-in-react/, /node_modules/]
+    }
+  }
 })

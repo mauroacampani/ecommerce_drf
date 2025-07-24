@@ -19,6 +19,7 @@ const ShippingForm = ({
     shipping_cost,
     shipping_id,
     shipping,
+    renderPaymentInfo
 }) => {
     return(
         
@@ -237,7 +238,9 @@ const ShippingForm = ({
                 </div>
             </div>
 
-
+                    {renderPaymentInfo && renderPaymentInfo()}
+          
+           
             
             </form>
 

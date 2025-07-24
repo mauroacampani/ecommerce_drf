@@ -47,6 +47,7 @@ export default function Payment(state= initialState, action){
             }
 
         case LOAD_BT_TOKEN_SUCCESS:
+          
             return {
                 ...state,
                 clientToken: payload.braintree_token

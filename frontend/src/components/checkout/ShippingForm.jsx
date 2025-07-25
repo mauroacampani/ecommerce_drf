@@ -39,7 +39,7 @@ const ShippingForm = ({
               
               <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                 <dt className="flex items-center text-sm text-gray-600">
-                  <span>Shipping estimate</span>
+                  <span>Envío estimado</span>
                   <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Learn more about how shipping is calculated</span>
                     <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
@@ -49,7 +49,7 @@ const ShippingForm = ({
               </div>
               <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                 <dt className="flex text-sm text-gray-600">
-                  <span>Tax estimate</span>
+                  <span>Impuesto estimado</span>
                   <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Learn more about how tax is calculated</span>
                     <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
@@ -59,14 +59,14 @@ const ShippingForm = ({
               </div>
 
               <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                <dt className="flex text-sm text-gray-600">
-                  <span>Sub Total</span>
+                <dt className="flex text-sm text-gray-600 " >
+                  <span>Precio sin descuento</span>
                   <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Learn more about how tax is calculated</span>
                     <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
                   </a>
                 </dt>
-                <dd className="text-sm font-medium text-gray-900">${total_compare_amount}</dd>
+                <dd className="text-sm font-medium text-gray-900 line-through" >${total_compare_amount}</dd>
               </div>
 
               <div className="border-t border-gray-200 pt-4 flex items-center justify-between">

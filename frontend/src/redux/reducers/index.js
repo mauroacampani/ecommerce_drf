@@ -6,6 +6,7 @@ import Products from './products';
 import Cart from './cart';
 import Shipping from './shipping';
 import Payment from './payment';
+import Orders from './orders';
 
 
 // Ejemplo: un reducer vacío
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   Products,
   Cart,
   Shipping,
-  Payment
+  Payment,
+  Orders
 })
 
 export default rootReducer;

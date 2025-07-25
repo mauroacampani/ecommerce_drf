@@ -143,7 +143,7 @@ const checkoutButton = () => {
 
                     
 
-                        <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
+                        {/* <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                             <dt className="flex items-center text-sm text-gray-600">
                             <span>Shipping estimate</span>
                             <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
@@ -162,7 +162,7 @@ const checkoutButton = () => {
                             </a>
                             </dt>
                             <dd className="text-sm font-medium text-gray-900">$8.32</dd>
-                        </div>
+                        </div> */}
                         <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                             <dt className="text-base font-medium text-gray-900">Total</dt>
                             <dd className="text-base font-medium text-gray-900">${amount.toFixed(2)}</dd>

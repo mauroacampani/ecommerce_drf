@@ -117,15 +117,15 @@ function Navbar({
           <div className="py-1">
             <Menu.Item>
               {({ active }) => (
-                <a
-                  href="#"
+                <Link
+                  to="/dashboard"
                   className={`block px-4 py-2 text-sm text-gray-700 ${active ? 'bg-gray-100' : ''}`}
                 >
-                  Account settings
-                </a>
+                  Dashboard
+                </Link>
               )}
             </Menu.Item>
-            <Menu.Item>
+            {/* <Menu.Item>
               {({ active }) => (
                 <a
                   href="#"
@@ -144,7 +144,7 @@ function Navbar({
                   License
                 </a>
               )}
-            </Menu.Item>
+            </Menu.Item> */}
             <form method="POST" action="#">
               <Menu.Item>
                 {({ active }) => (

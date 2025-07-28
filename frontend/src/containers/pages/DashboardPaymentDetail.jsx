@@ -1,13 +1,16 @@
 import Layaut from '../../hocs/Layout';
 import { connect } from 'react-redux';
-import { list_orders } from '../../redux/actions/orders';
+import { list_orders, get_order_detail } from '../../redux/actions/orders';
 import { get_items, get_total, get_item_total } from '../../redux/actions/cart';
 import { useEffect, useState, Fragment } from 'react';
 import { Link, Navigate } from "react-router-dom";
 import DashboardLink from '../../components/dashboard/DashboardLink';
 import moment from 'moment';
+import { useParams } from "react-router";
+
 
 import { Dialog, Menu, Transition } from '@headlessui/react'
+
 import {
   BellIcon,
   CalendarIcon,
@@ -59,26 +62,24 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const DashboardPayments = ({
-    list_orders,
-    get_items,
-    get_total,
-    get_item_total,
-    orders,
+const DashboardPaymentDetail = ({
+    get_order_detail,
+    order,
     isAuthenticated,
     user
 }) => {
 
-    const [sidebarOpen, setSidebarOpen] = useState(false)
+
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    const params = useParams();
+    
+    const transaction_id = params.transaction_id
+
 
     useEffect(() => {
-        
-        get_items()
-        get_total()
-        get_item_total()
-        list_orders()
-        
-    }, []);
+        get_order_detail(transaction_id)
+    }, [transaction_id]);
 
 
     if (!isAuthenticated)
@@ -262,23 +263,13 @@ const DashboardPayments = ({
           
                         <div className="max-w-3xl mx-auto">
                              <div className="bg-white">
-                                <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-                                    
+                                <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 sm:py-6 lg:px-8">
+                                    <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">Order Details</h1>
 
-                                    
-
-                                    <div className="mt-8">
-                                    <h2 className="sr-only">Products purchased</h2>
-                                        
-                                    <div className="space-y-12">
-                                        {orders.map((product) => (
-                                            <>
-                                            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">Order Details</h1>
-
-                                        <div className="text-sm border-b border-gray-200 mt-2 pb-5 sm:flex sm:justify-between">
+                                    <div className="text-sm border-b border-gray-200 mt-2 pb-5 sm:flex sm:justify-between">
                                     <dl className="flex">
-                                        <dt className="text-gray-500">ID Transacción:&nbsp;</dt>
-                                        <dd className="font-medium text-gray-900">{product.transaction_id}</dd>
+                                        <dt className="text-gray-500">ID Transacción&nbsp;</dt>
+                                        <dd className="font-medium text-gray-900">{order.transaction_id}</dd>
                                         <dt>
                                         <span className="sr-only">Date</span>
                                         <span className="text-gray-400 mx-2" aria-hidden="true">
@@ -286,26 +277,31 @@ const DashboardPayments = ({
                                         </span>
                                         </dt>
                                         <dd className="font-medium text-gray-900">
-                                        <time dateTime="2021-03-22">{moment(product.date_issued).fromNow()}</time>
+                                        <time dateTime="2021-03-22">{moment(order.date_issued).fromNow()}</time>
                                         </dd>
                                     </dl>
-                                    <div className="mt-4 sm:mt-0">
-                                        <Link to={`/dashboard/payment/${product.transaction_id}`} className="font-medium text-indigo-600 hover:text-indigo-500">
-                                        View invoice<span aria-hidden="true"> &rarr;</span>
-                                        </Link>
+                                    
                                     </div>
-                                    </div>
-                                            
+
+                                    <div className="mt-8">
+                                    <h2 className="sr-only">Products purchased</h2>
+
+                                    <div className="space-y-24">
+                                        {order.order_items.map((product) => (
                                         <div
                                             key={product.transaction_id}
                                             className="grid grid-cols-1 text-sm sm:grid-rows-1 sm:grid-cols-12 sm:gap-x-6 md:gap-x-8 lg:gap-x-8"
                                         >
-                                            
+                                            {/* <div className="mt-6 sm:col-span-7 sm:mt-0 md:row-end-1">
+                                            <div className="aspect-w-1 aspect-h-1 bg-gray-50 rounded-lg overflow-hidden">
+                                                <img src={product.photo} alt={product.imageAlt} className="object-center object-cover" />
+                                            </div>
+                                            </div> */}
                                             <div className="mt-6 sm:col-span-7 sm:mt-0 md:row-end-1">
                                             <h3 className="text-lg font-medium text-gray-900">
-                                                <Link to={`/producto/${product.id}`}>{product.name}</Link>
+                                                <a href={product.href}>{product.name}</a>
                                             </h3>
-                                            {/* <p className="font-medium text-gray-900 mt-1">ID Transacción: {product.transaction_id}</p> */}
+                                            <p className="font-medium text-gray-900 mt-1">${product.price}</p>
                                             <p className="text-gray-500 mt-3">{product.description}</p>
                                             </div>
                                             <div className="sm:col-span-12 md:col-span-7">
@@ -313,15 +309,24 @@ const DashboardPayments = ({
                                                 <div>
                                                 <dt className="font-medium text-gray-900">Delivery address</dt>
                                                 <dd className="mt-3 text-gray-500">
-                                                    <span className="block">{product.address_line_1}</span>
-                                                    <span className="block">{product.address_line_2}</span>
-                                               
+                                                    {/* <span className="block">{product.address[0]}</span>
+                                                    <span className="block">{product.address[1]}</span>
+                                                    <span className="block">{product.address[2]}</span> */}
                                                 </dd>
                                                 </div>
-                                                
+                                                <div>
+                                                <dt className="font-medium text-gray-900">Shipping updates</dt>
+                                                <dd className="mt-3 text-gray-500 space-y-3">
+                                                    <p>{product.email}</p>
+                                                    <p>{product.phone}</p>
+                                                    <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
+                                                    Edit
+                                                    </button>
+                                                </dd>
+                                                </div>
                                             </dl>
                                             <p className="font-medium text-gray-900 mt-6 md:mt-10">
-                                               Estado: {product.status}
+                                                {product.status} on <time dateTime={product.datetime}>{product.date}</time>
                                             </p>
                                             <div className="mt-6">
                                                 <div className="bg-gray-200 rounded-full overflow-hidden">
@@ -345,13 +350,12 @@ const DashboardPayments = ({
                                             </div>
                                             </div>
                                         </div>
-                                        </>
                                         ))}
                                     </div>
                                     </div>
 
                                     {/* Billing */}
-                                    
+            
                                 </div>
                                 </div>
                             
@@ -366,13 +370,14 @@ const DashboardPayments = ({
 }
 
 const mapStateToProps = state => ({
-    orders: state.Orders.orders,
+    order: state.Orders.order,
     isAuthenticated: state.Auth.isAuthenticated,
     user: state.Auth.user
 })
 export default connect(mapStateToProps, {
     list_orders,
+    get_order_detail,
     get_items,
     get_total,
     get_item_total 
-}) (DashboardPayments);
+}) (DashboardPaymentDetail);

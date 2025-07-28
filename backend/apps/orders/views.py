@@ -63,15 +63,19 @@ class ListOrderDetailView(APIView):
                 result['date_issued'] = order.date_issued
 
                 order_items = OrderItem.objects.order_by('-date_added').filter(order=order)
-
+               
                 result['order_items'] = []
 
                 for order_item in order_items:
+                   
                     sub_item = {}
 
                     sub_item['name'] = order_item.name
                     sub_item['price'] = order_item.price
                     sub_item['count'] = order_item.count
+                    sub_item['description'] = order_item.product.description
+                    
+                    
 
                 result['order_items'].append(sub_item)
 

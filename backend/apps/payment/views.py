@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from rest_framework.views import APIView
 from apps.cart.models import Cart, CartItem
+from apps.coupons.models import FixedPriceCoupon, PercentageCoupon
 from apps.orders.models import Order, OrderItem
 from apps.shipping.models import Shipping
 from django.core.mail import send_mail
@@ -45,6 +46,10 @@ class GetPaymentTotalView(APIView):
         shipping_id = request.query_params.get('shipping_id')
         shipping_id = str(shipping_id)
 
+        coupon_name = request.query_params.get('coupon_name')
+        coupon_name = str(coupon_name)
+        
+
         try:
             cart = Cart.objects.get(user=user)
 
@@ -81,11 +86,34 @@ class GetPaymentTotalView(APIView):
                 total_compare_amount = round(total_compare_amount, 2)
                 original_price = round(total_amount, 2)
 
+                #Cupones
+                if coupon_name != '':
+                    
+                    #Revisa si el cupon de precio fijo es valido
+                    if FixedPriceCoupon.objects.filter(name__iexact=coupon_name).exists():
+                        fixed_price_coupon = FixedPriceCoupon.objects.get(name=coupon_name)
+                 
+                        discount_amount = float(fixed_price_coupon.discount_price)
+                        if discount_amount < total_amount:
+                            total_amount -= discount_amount
+                           
+                            total_after_coupon = total_amount
+                    elif PercentageCoupon.objects.filter(name__iexact=coupon_name).exists():
+                        percentage_coupon = PercentageCoupon.objects.get(name=coupon_name)
+                        discount_percentage = float(percentage_coupon.discount_percentage)
+
+                        if discount_percentage > 1 and discount_percentage < 100:
+                            total_amount -= (total_amount * (discount_percentage / 100))
+                            total_after_coupon = total_amount
+
+                #Total despues del cupon
+                total_after_coupon = round(total_after_coupon, 2)
+
                 # Impuesto estimado
                 estimated_tax = round(total_amount * tax, 2)
 
                 total_amount += (total_amount * tax)
-
+                
                 shipping_cost = 0.0
                 # verificar que el envio sea valido
                 if Shipping.objects.filter(id__iexact=shipping_id).exists():
@@ -93,12 +121,14 @@ class GetPaymentTotalView(APIView):
                     shipping = Shipping.objects.get(id=shipping_id)
                     shipping_cost = shipping.price
                     total_amount += float(shipping_cost)
+                    
                 
 
                 total_amount = round(total_amount, 2)
 
                 return Response({
                     'original_price': f'{original_price:.2f}',
+                    'total_after_coupon': f'{total_after_coupon:.2f}',
                     'total_amount': f'{total_amount:.2f}',
                     'total_compare_amount': f'{total_compare_amount:.2f}',
                     'estimated_tax': f'{estimated_tax:.2f}',
@@ -112,195 +142,7 @@ class GetPaymentTotalView(APIView):
                 {'error': 'Something went wrong when retrieving payment total information'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-        
 
-# class ProcessPaymentView(APIView):
-   
-#     def post(self, request, format=None):
-#         user = self.request.user
-#         data = self.request.data
-
-#         tax = 0.18
-
-#         nonce = data['nonce']
-#         shipping_id = str(data['shipping_id'])
-
-#         #cupon
-
-#         full_name = data['full_name']
-#         address_line_1 = data['address_line_1']
-#         address_line_2 = data['address_line_2']
-#         city = data['city']
-#         state_province_region = data['state_province_region']
-#         postal_zip_code = data['postal_zip_code']
-#         country_region = data['country_region']
-#         telephone_number = data['telephone_number']
-
-#         # revisar si datos de shipping son validos
-#         if not Shipping.objects.filter(id__iexact=shipping_id).exists():
-#             return Response(
-#                 {'error': 'Shipping invalido'},
-#                 status=status.HTTP_404_NOT_FOUND
-#             )
-        
-#         cart = Cart.objects.get(user=user)
-
-#         #revisar si usuario tiene items en carrito
-#         if not CartItem.objects.filter(cart=cart).exists():
-#             return Response(
-#                 {'error': 'Necesitar tener items en el carrito'},
-#                 status=status.HTTP_404_NOT_FOUND
-#             )
-        
-#         cart_items = CartItem.objects.filter(cart=cart)
-
-#         #Revisa si hay stock
-#         for cart_item in cart_items:
-#             if not Product.objects.filter(id=cart_item.product.id).exists():
-#                 return Response(
-#                     {'error': 'El producto id no existe'},
-#                     status=status.HTTP_404_NOT_FOUND
-#                 )
-#             if int(cart_item.count) > int(cart_item.product.quantity):
-#                 return Response(
-#                     {'error': 'No hay suficiente en stock'},
-#                     status=status.HTTP_200_OK
-#                 )
-            
-#         total_amount = 0.0
-
-#         for cart_item in cart_items:
-#             total_amount += (float(cart_item.product.price) * float(cart_item.count))
-
-#         #cupones
-#         # ==============
-
-#         total_amount += (total_amount * tax)
-
-#         shipping = Shipping.objects.get(id=int(shipping_id))
-
-#         shipping_name = shipping.name
-#         shipping_time = shipping.time_to_delivery
-#         shipping_price = shipping.price
-
-#         total_amount += float(shipping_price)
-#         total_amount = round(total_amount, 2)
-
-#         try:
-#             # Crear transaccion con braintree
-#             newTransaction = gateway.transaction.sale(
-#                 {
-#                     'amount': str(total_amount),
-#                     'payment_method_nonce': str(nonce['nonce']),
-#                     'options': {
-#                         'submit_for_settlement': True
-#                     }
-#                 }
-#             )
-#         except:
-#             return Response(
-#                 {'error': 'Error al procesar la transaccion'},
-#                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
-#             )
-        
-        
-#         if newTransaction.is_success or newTransaction.transaction:
-#             for cart_item in cart_items:
-#                 update_product = Product.objects.get(id=cart_item.product.id)
-
-#                 #encontrar cantidad despues de coompra
-#                 quantity = int(update_product.quantity) - int(cart_item.count)
-
-#                 #obtener cantidad de producto por vender
-#                 sold = int(update_product.sold) + int(cart_item.count)
-
-#                 #actualizar el producto
-#                 Product.objects.filter(id=cart_item.product.id).update(
-#                     quantity=quantity, sold=sold
-#                 )
-
-#             #crear orden
-#             try:
-#                 order = Order.objects.create(
-#                     user=user,
-#                     transaction_id=newTransaction.transaction.id,
-#                     amount=total_amount,
-#                     full_name=full_name,
-#                     address_line_1=address_line_1,
-#                     address_line_2=address_line_2,
-#                     city=city,
-#                     state_province_region=state_province_region,
-#                     postal_zip_code=postal_zip_code,
-#                     country_region=country_region,
-#                     telephone_number=telephone_number,
-#                     shipping_name=shipping_name,
-#                     shipping_time=shipping_time,
-#                     shipping_price=float(shipping_price)
-#                 )
-#             except:
-#                 return Response(
-#                     {'error': 'La transacción fue exitosa pero no se logró crear el pedido'},
-#                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
-#                 )
-            
-#             for cart_item in cart_items:
-#                 try:
-#                     # agarrar el producto
-#                     product = Product.objects.get(id=cart_item.product.id)
-
-#                     OrderItem.objects.create(
-#                         product=product,
-#                         order=order,
-#                         name=product.name,
-#                         price=cart_item.product.price,
-#                         count=cart_item.count
-#                     )
-#                 except:
-#                     return Response(
-#                         {'error': 'La transacción fue exitosa y se creó el pedido, pero no se logró crear un artículo del pedido.'},
-#                         status=status.HTTP_500_INTERNAL_SERVER_ERROR
-#                     )
-                
-#             try:
-#                 send_mail(
-#                     'Detalles del pedido',
-#                     'Hola ' + full_name + ','
-#                     + '\n\n¡Hemos recibido tu pedido!'
-#                     + '\n\nDanos algo de tiempo para procesar tu pedido y enviártelo.'
-#                     + '\n\nPuedes ir a tu panel de usuario para comprobar el estado de tu pedido.'
-#                     + '\n\nAtentamente,'
-#                     + '\nMauro',
-#                     'mauroac26@gmail.com',
-#                     [user.email],
-#                     fail_silently=False
-#                 )
-#             except:
-#                 return Response(
-#                     {'error': 'La transacción se realizó correctamente y se creó el pedido, pero no se pudo enviar el correo electrónico.'},
-#                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
-#                 )
-
-#             try:
-#                 # Vaciar carrito de compras
-#                 CartItem.objects.filter(cart=cart).delete()
-
-#                 # Actualizar carrito
-#                 Cart.objects.filter(user=user).update(total_items=0)
-#             except:
-#                 return Response(
-#                     {'error': 'La transacción fue exitosa y el pedido fue exitoso, pero no se pudo vaciar el carrito.'},
-#                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
-#                 )
-            
-#             return Response(
-#                 {'success': 'Transacción exitosa y pedido creado'},
-#                 status=status.HTTP_200_OK
-#             )
-#         else:
-#             return Response(
-#                 {'error': 'Transaccion fallida'},
-#                 status=status.HTTP_400_BAD_REQUEST
-#             )
 
 class ProcessPaymentView(APIView):
     def post(self, request, format=None):
@@ -311,6 +153,7 @@ class ProcessPaymentView(APIView):
 
         nonce = data['nonce']
         shipping_id = str(data['shipping_id'])
+        coupon_name = str(data['coupon_name'])
   
 
         full_name = data['full_name']
@@ -363,6 +206,22 @@ class ProcessPaymentView(APIView):
                              * float(cart_item.count))
         
         # Cupones
+        if coupon_name != '':
+            #Revisa si el cupon de precio fijo es valido
+            if FixedPriceCoupon.objects.filter(name__iexact=coupon_name).exists():
+                fixed_price_coupon = FixedPriceCoupon.objects.get(name=coupon_name)
+
+                discount_amount = float(fixed_price_coupon.discount_price)
+                if discount_amount < total_amount:
+                    total_amount -= discount_amount
+
+            elif PercentageCoupon.objects.filter(name__iexact=coupon_name).exists():
+                percentage_coupon = PercentageCoupon.objects.get(name=coupon_name)
+                discount_percentage = float(percentage_coupon.discount_percentage)
+
+                if discount_percentage > 1 and discount_percentage < 100:
+                    total_amount -= (total_amount * (discount_percentage / 100))
+             
  
 
         total_amount += (total_amount * tax)

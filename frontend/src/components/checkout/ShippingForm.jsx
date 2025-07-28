@@ -1,4 +1,6 @@
 import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
+import { TicketIcon } from '@heroicons/react/24/outline'
+import { Fragment } from 'react'
 
 const ShippingForm = ({
     full_name,
@@ -19,7 +21,11 @@ const ShippingForm = ({
     shipping_cost,
     shipping_id,
     shipping,
-    renderPaymentInfo
+    renderPaymentInfo,
+    apply_coupon,
+    coupon,
+    coupon_name,
+    total_after_coupon
 }) => {
     return(
         
@@ -35,6 +41,50 @@ const ShippingForm = ({
               <div className="flex items-center justify-between">
                     {renderShipping()}
               </div>
+
+              <div className="flex items-center justify-between">
+                <form onSubmit={e => apply_coupon(e)}>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                        Discount Coupon
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                        <div className="relative flex items-stretch flex-grow focus-within:z-10">
+                        
+                        <input
+                            name='coupon_name'
+                            type='text'
+                            onChange={e => onChange(e)}
+                            value={coupon_name}
+                            className="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-none rounded-l-md pl-4 sm:text-sm border-gray-300"
+                            placeholder="Enter Code"
+                        />
+                        </div>
+                        <button
+                        type="submit"
+                        className="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                        >
+                        <TicketIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                        <span>Apply Coupon</span>
+                        </button>
+                        
+                    </div>
+                    
+                </form>
+              </div>
+
+              {
+                    coupon && 
+                    coupon !== null &&
+                    coupon !== undefined ? (
+                        <div
+                            className='text-green-500'
+                        >
+                            Coupon: {coupon.name} aplicado.
+                        </div>
+                    ) : (
+                        <Fragment></Fragment>
+                    )
+                }
           
               
               <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
@@ -69,10 +119,34 @@ const ShippingForm = ({
                 <dd className="text-sm font-medium text-gray-900 line-through" >${total_compare_amount}</dd>
               </div>
 
-              <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                <dt className="text-base font-medium text-gray-900">Total</dt>
-                <dd className="text-base font-medium text-gray-900">${total_amount}</dd>
+              {
+                coupon && 
+                coupon !== null && 
+                coupon !== undefined ?
+                <>
+                <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
+                <dt className="flex text-sm text-gray-600 " >
+                  <span>Descuento total</span>
+                  <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
+                    <span className="sr-only">Learn more about how tax is calculated</span>
+                    <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
+                  </a>
+                </dt>
+                <dd className="text-sm font-medium text-gray-900 line-through" >${total_after_coupon}</dd>
               </div>
+                <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
+                    <dt className="text-base font-medium text-gray-900">Total (con cupón)</dt>
+                    <dd className="text-base font-medium text-gray-900">${total_amount}</dd>
+                </div> 
+                </>
+                    : 
+                <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
+                    <dt className="text-base font-medium text-gray-900">Total</dt>
+                    <dd className="text-base font-medium text-gray-900">${total_amount}</dd>
+              </div>
+              }
+
+              
             </dl>
 
             <form onSubmit={e => buy(e)}>

@@ -8,6 +8,7 @@ import {
 } from './types';
 
 export const get_user_profile = () => async dispatch => {
+    
     if (localStorage.getItem('access')) {
         const config = {
             headers: {
@@ -19,7 +20,8 @@ export const get_user_profile = () => async dispatch => {
         try {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/profile/user`, config);
 
-            if (res === 200) {
+            if (res.status === 200) {
+                
                 dispatch({
                     type: GET_USER_PROFILE_SUCCESS,
                     payload: res.data

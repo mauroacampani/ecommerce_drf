@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth import get_user_model
-User = get_user_model()
+from django.conf import settings
+User = settings.AUTH_USER_MODEL
 from apps.orders.countries import Countries
 
 class UserProfile(models.Model):

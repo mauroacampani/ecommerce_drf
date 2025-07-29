@@ -8,6 +8,7 @@ import Shipping from './shipping';
 import Payment from './payment';
 import Orders from './orders';
 import Coupons from './coupons';
+import Profile from './profile';
 
 
 // Ejemplo: un reducer vacío
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
   Shipping,
   Payment,
   Orders,
-  Coupons
+  Coupons,
+  Profile
 })
 
 export default rootReducer;

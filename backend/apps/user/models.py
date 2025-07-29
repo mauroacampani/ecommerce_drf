@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from apps.cart.models import Cart
+from apps.user_profile.models import UserProfile
 
 #Creacion de un usuario
 class UserAccountManager(BaseUserManager):
@@ -18,6 +19,10 @@ class UserAccountManager(BaseUserManager):
         #Crea un carrito al crear un usuario 
         shopping_cart = Cart.objects.create(user = user)
         shopping_cart.save() 
+
+        #Se crea el perfil del usuario 
+        profile = UserProfile.objects.create(user = user)
+        profile.save() 
 
         return user
     

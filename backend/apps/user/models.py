@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from apps.cart.models import Cart
 from apps.user_profile.models import UserProfile
+from apps.wishlist.models import WishList
 
 #Creacion de un usuario
 class UserAccountManager(BaseUserManager):
@@ -22,7 +23,11 @@ class UserAccountManager(BaseUserManager):
 
         #Se crea el perfil del usuario 
         profile = UserProfile.objects.create(user = user)
-        profile.save() 
+        profile.save()
+
+        #Se crea el wishlist
+        wishlist = WishList.objects.create(user = user)
+        wishlist.save()
 
         return user
     

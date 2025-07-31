@@ -59,6 +59,8 @@ export const add_item = product => async dispatch => {
 
     } else {
         let cart = [];
+        
+     
 
         if (localStorage.getItem('cart')) {
             cart = JSON.parse(localStorage.getItem('cart'));
@@ -90,6 +92,7 @@ export const add_item = product => async dispatch => {
 
 
 export const get_items = () => async dispatch => {
+    
     if (localStorage.getItem('access')) {
         const config = {
             headers: {
@@ -102,6 +105,7 @@ export const get_items = () => async dispatch => {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart/cart-items`, config);
 
             if (res.status === 200) {
+                
                 dispatch({
                     type: GET_ITEMS_SUCCESS,
                     payload: res.data
@@ -119,6 +123,7 @@ export const get_items = () => async dispatch => {
         }
 
     } else {
+   
         dispatch({
             type: GET_ITEMS
         });
@@ -140,6 +145,7 @@ export const get_total = () => async dispatch => {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart/get-total`, config);
 
             if (res.status === 200) {
+                
                 dispatch({
                     type: GET_TOTAL_SUCCESS,
                     payload: res.data
@@ -182,6 +188,7 @@ export const get_total = () => async dispatch => {
 }
 
 export const get_item_total = () => async dispatch => {
+    
     if (localStorage.getItem('access')) {
         const config = {
             headers: {
@@ -216,6 +223,7 @@ export const get_item_total = () => async dispatch => {
 
         if (localStorage.getItem('cart')) {
             total = JSON.parse(localStorage.getItem('cart')).length;
+           
         }
 
         dispatch({
@@ -335,7 +343,7 @@ export const remove_item = item => async dispatch => {
                 }
             });
         }
-
+        
         dispatch({
             type: REMOVE_ITEM,
             payload: new_cart

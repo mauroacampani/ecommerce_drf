@@ -4,11 +4,18 @@ import { connect } from "react-redux";
 import { get_product, get_related_products } from "../../redux/actions/products";
 import { useEffect, useState } from "react";
 import { RadioGroup } from '@headlessui/react';
-import { HeartIcon } from '@heroicons/react/20/solid'
+
 import ImageGallery from "../../components/product/ImagenGallery";
 import { get_items, add_item, get_total, get_item_total } from '../../redux/actions/cart'
 import ClipLoader from "react-spinners/ClipLoader";
 import { useNavigate } from "react-router-dom";
+import { add_wishlist_item, 
+         get_wishlist_item_total, 
+         remove_wishlist_item,
+         get_wishlist_items } 
+from '../../redux/actions/wishlist'
+import { Navigate } from "react-router-dom";
+import WishlistHeart from "../../components/product/WishlistHeart";
 
 const ProductDetail = ({
     get_product,
@@ -17,7 +24,13 @@ const ProductDetail = ({
     get_items, 
     add_item, 
     get_total, 
-    get_item_total
+    get_item_total,
+    add_wishlist_item, 
+    get_wishlist_item_total,
+    remove_wishlist_item,
+    get_wishlist_items,
+    isAuthenticated,
+    wishlist
 }) =>{
 
     // const [selectedColor, setSelectedColor] = useState(product.colors[0])
@@ -38,6 +51,42 @@ const ProductDetail = ({
       }
     }
 
+    const addToWishlist = async () => {
+      if (isAuthenticated) {
+        let isPresent = false;
+        if(
+          wishlist &&
+          wishlist !== null &&
+          wishlist !== undefined &&
+          product &&
+          product !== null &&
+          product !== undefined
+        ){
+          wishlist.map(item => {
+            if (item.product.id.toString() === product.id.toString()){
+              isPresent = true;
+            }
+          });
+        }
+
+        if (isPresent) {
+          await remove_wishlist_item(product.id);
+          await get_wishlist_items();
+          await get_wishlist_item_total();
+        }else {
+          await remove_wishlist_item(product.id);
+          await add_wishlist_item(product.id);
+          await get_wishlist_items();
+          await get_wishlist_item_total();
+          await get_items();
+          await get_total();
+          await get_item_total();
+        }
+      }else{
+        return <Navigate to="/cart"/>
+      }
+    }
+
     const params = useParams();
     const productId = params.productId;
 
@@ -45,6 +94,8 @@ const ProductDetail = ({
       window.scrollTo(0, 0)
         get_product(productId)
         get_related_products(productId)
+        get_wishlist_item_total()
+        get_wishlist_items()
     }, []);
 
     return(
@@ -133,17 +184,14 @@ const ProductDetail = ({
                   className="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full"
                 >
                   Agregar al carrito
-                </button>
-                }
+                </button>}
 
-
-                <button
-                  type="button"
-                  className="ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500"
-                >
-                  <HeartIcon className="h-6 w-6 flex-shrink-0" aria-hidden="true" />
-                  <span className="sr-only">Add to favorites</span>
-                </button>
+                  <WishlistHeart
+                    product={product}
+                    wishlist = {wishlist}
+                    addToWishlist = {addToWishlist}
+                  />
+                
               </div>
             </div>
 
@@ -157,7 +205,8 @@ const ProductDetail = ({
 
 const mapStateToProps = state => ({
     product: state.Products.product,
-
+    isAuthenticated: state.Auth.isAuthenticated,
+    wishlist: state.Wishlist.wishlist
 })
 export default connect(mapStateToProps, {
     get_product,
@@ -165,5 +214,9 @@ export default connect(mapStateToProps, {
     get_items, 
     add_item, 
     get_total, 
-    get_item_total
+    get_item_total,
+    add_wishlist_item, 
+    get_wishlist_item_total,
+    get_wishlist_items,
+    remove_wishlist_item
 }) (ProductDetail);

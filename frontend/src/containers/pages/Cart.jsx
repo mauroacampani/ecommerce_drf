@@ -4,9 +4,9 @@ import { get_items, get_total, get_item_total, remove_item, update_item } from '
 import { useEffect, useState } from "react";
 import CartItem from "../../components/cart/CartItem";
 import { Link } from "react-router-dom";
-import { CheckIcon, ClockIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { setAlert } from "../../redux/actions/alert";
-
+import { remove_wishlist_item } from "../../redux/actions/wishlist";
+import WishlistItem from "../../components/cart/WishlistItem";
 
 const Cart = ({
     get_items, 
@@ -19,7 +19,9 @@ const Cart = ({
     total_items, 
     remove_item,
     update_item,
-    setAlert
+    setAlert,
+    wishlist_items,
+    remove_wishlist_item
 }) => {
 
     const [render, setRender] = useState(false);
@@ -56,6 +58,39 @@ const Cart = ({
                                 >
                                 
                             </CartItem>
+                        </div>
+                    )
+                })
+            }
+        </div>
+        )
+    }
+
+    const showWishlistItems = () => {
+        return(
+        <div>
+           
+            {
+                wishlist_items &&
+                wishlist_items !== null &&
+                wishlist_items !== undefined &&
+                wishlist_items.length !== 0 &&
+                wishlist_items.map((item, index) => {
+                    let count = item.count;
+
+                    return(
+                        <div key={index}>
+                            <WishlistItem
+                            item={item}
+                                count={count}
+                                update_item={update_item}
+                                render={render}
+                                remove_wishlist_item={remove_wishlist_item}
+                                setRender={setRender}
+                                serAlert={setAlert}
+                                
+                                
+                            />
                         </div>
                     )
                 })
@@ -108,6 +143,14 @@ const checkoutButton = () => {
             </>
             )
         }
+    }
+
+    const RemoveWishlistItem = (e) => {
+        e.preventDefault();
+
+        remove_wishlist_item()
+
+
     }
 
     return (
@@ -174,6 +217,7 @@ const checkoutButton = () => {
                         </div>
                     </section>
                     </div>
+                    {showWishlistItems()}
                 </div>
             </div>
         </Layout>
@@ -184,7 +228,8 @@ const mapStateToProps = state => ({
     items: state.Cart.items,
     amount: state.Cart.amount,
     compare_amount: state.Cart.compare_amount,
-    total_items: state.Cart.total_items
+    total_items: state.Cart.total_items,
+    wishlist_items: state.Wishlist.items
 })
 export default connect(mapStateToProps,{
     get_items, 
@@ -192,5 +237,6 @@ export default connect(mapStateToProps,{
     get_item_total,
     remove_item,
     update_item,
-    setAlert
+    setAlert, 
+    remove_wishlist_item
 }) (Cart);

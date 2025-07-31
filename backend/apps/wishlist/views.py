@@ -42,29 +42,27 @@ class AddItemView(APIView):
 
         try:
             product_id = int(data['product_id'])
-        
         except:
             return Response(
-                {'error': 'El producto id debe ser un entero'},
+                {'error': 'Product ID '},
                 status=status.HTTP_404_NOT_FOUND
             )
         
-
         try:
-            if not Product.objects.filter(id = product_id).exists():
+            if not Product.objects.filter(id=product_id).exists():
                 return Response(
-                    {'error': 'El producto no existe'},
-                status=status.HTTP_404_NOT_FOUND
+                    {'error': 'This product does not exist'},
+                    status=status.HTTP_404_NOT_FOUND
                 )
-            
+
             product = Product.objects.get(id=product_id)
             wishlist = WishList.objects.get(user=user)
 
-            if WishList.objects.filter(wishlist=wishlist, product=product).exists():
+            if WishListItem.objects.filter(wishlist=wishlist, product=product).exists():
                 return Response(
-                    {'error': 'El artículo ya se encuentra en la lista de deseos'}
+                    {'error': 'Item already in wishlist'},
+                    status=status.HTTP_409_CONFLICT
                 )
-            
 
             WishListItem.objects.create(
                 product=product,
@@ -78,16 +76,15 @@ class AddItemView(APIView):
                 )
 
                 cart = Cart.objects.get(user=user)
-
+            
                 if CartItem.objects.filter(cart=cart, product=product).exists():
-                    #Actualizar items totales en el carrito
                     CartItem.objects.filter(
                         cart=cart,
                         product=product
                     ).delete()
 
                     if not CartItem.objects.filter(cart=cart, product=product).exists():
-                        #Actualiza items totales en el carrito
+                        # actualizar items totales ene l carrito
                         total_items = int(cart.total_items) - 1
                         Cart.objects.filter(user=user).update(
                             total_items=total_items
@@ -97,7 +94,7 @@ class AddItemView(APIView):
             result = []
 
             for wishlist_item in wishlist_items:
-                item={}
+                item = {}
 
                 item['id'] = wishlist_item.id
                 product = Product.objects.get(id=wishlist_item.product.id)
@@ -106,7 +103,6 @@ class AddItemView(APIView):
                 item['product'] = product.data
 
                 result.append(item)
-
             
             return Response(
                 {'wishlist': result},
@@ -115,8 +111,8 @@ class AddItemView(APIView):
 
         except:
             return Response(
-                {'error': 'El prodcuto id debe ser un entero'},
-                status=status.HTTP_404_NOT_FOUND
+                {'error': 'Something went wrong when adding item to wishlist'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
 

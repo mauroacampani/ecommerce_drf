@@ -25,7 +25,7 @@ const WishlistHeart = ({
     }
 
     if (selected){
-        console.log(selected)
+    
         return (
              <button
             onClick={addToWishlist}

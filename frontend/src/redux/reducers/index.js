@@ -10,6 +10,7 @@ import Orders from './orders';
 import Coupons from './coupons';
 import Profile from './profile';
 import Wishlist from './wishlist';
+import Reviews from './reviews';
 
 
 // Ejemplo: un reducer vacío
@@ -29,7 +30,8 @@ const rootReducer = combineReducers({
   Orders,
   Coupons,
   Profile,
-  Wishlist
+  Wishlist,
+  Reviews
 })
 
 export default rootReducer;

@@ -1,4 +1,5 @@
-/* This example requires Tailwind CSS v2.0+ */
+import { Link } from "react-router-dom";
+
 export default function Banner() {
     return (
       <div className="relative bg-white overflow-hidden">
@@ -6,11 +7,10 @@ export default function Banner() {
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:static">
             <div className="sm:max-w-lg">
               <h1 className="text-4xl font font-extrabold tracking-tight text-gray-900 sm:text-6xl">
-                Summer styles are finally here
+                Tienda
               </h1>
               <p className="mt-4 text-xl text-gray-500">
-                This year, our new summer collection will shelter you from the harsh elements of a world that doesn't care
-                if you live or die.
+                Tienda de computacion
               </p>
             </div>
             <div>
@@ -25,7 +25,7 @@ export default function Banner() {
                       <div className="flex-shrink-0 grid grid-cols-1 gap-y-6 lg:gap-y-8">
                         <div className="w-44 h-64 rounded-lg overflow-hidden sm:opacity-0 lg:opacity-100">
                           <img
-                            src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-01.jpg"
+                            src="Lenovo.jpg"
                             alt=""
                             className="w-full h-full object-center object-cover"
                           />
@@ -81,12 +81,12 @@ export default function Banner() {
                   </div>
                 </div>
   
-                <a
-                  href="#"
+                <Link
+                  to={'/shop'}
                   className="inline-block text-center bg-indigo-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-indigo-700"
                 >
-                  Shop Collection
-                </a>
+                  Ir a la tienda
+                </Link>
               </div>
             </div>
           </div>

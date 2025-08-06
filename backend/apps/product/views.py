@@ -23,7 +23,7 @@ class ProductDetailView(APIView):
         if Product.objects.filter(id=product_id).exists():
             product = Product.objects.get(id=product_id)
 
-            product = ProductSerializer(product)
+            product = ProductSerializer(product, context={'request': request})
 
             return Response({'product': product.data}, status=status.HTTP_200_OK)
         else:

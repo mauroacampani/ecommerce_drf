@@ -20,9 +20,13 @@ import {
     RESET_PASSWORD_CONFIRM_FAIL,
 } from './types'
 
-import { setAlert } from './ALERT.JS';
+import { setAlert } from './alert.js';
 
-import axios from 'axios'
+import axios from 'axios';
+
+import { get_items, get_total, get_item_total, synch_cart } from './cart.js';
+
+import { get_wishlist_item_total, clear_wishlist, get_wishlist_items } from './wishlist.js';
 
 //CHEQUEA QUE EL USUARIO ESTE AUTENTICADO
 export const check_authenticated = () => async dispatch => {
@@ -182,6 +186,11 @@ export const login = (email, password) => async dispatch => {
             });
 
             dispatch(setAlert('Inicio de sesión con exito', 'green'));
+
+            dispatch(synch_cart());
+            dispatch(get_wishlist_items());
+            dispatch(get_wishlist_item_total());
+
         }else {
             dispatch({
                 type: LOGIN_FAIL
@@ -407,10 +416,15 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
 
 export const logout = () => dispatch => {
 
-    localStorage.removeItem('cart')
+    // localStorage.removeItem('cart')
     
     dispatch({
         type: LOGOUT
     });
-    dispatch(setAlert("Se cerró sesión correctamente", 'green'))
+    dispatch(setAlert("Se cerró sesión correctamente", 'green'));
+
+    dispatch(get_items());
+    dispatch(get_item_total());
+    dispatch(get_total());
+    dispatch(clear_wishlist());
 }

@@ -55,17 +55,17 @@ class GetProductReviewsView(APIView):
         
 
 class GetProductReviewView(APIView):
-    def get(self, request, productoId, format=None):
-        user = user.request.user
+    def get(self, request, productId, format=None):
+        user = self.request.user
 
         try:
-            product_id = int(productoId)
+            product_id = int(productId)
         except:
             return Response(
                 {'error': 'El ID del producto debe ser un entero'},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+       
         try:
             if not Product.objects.filter(id=product_id).exists():
                 return Response(
@@ -103,13 +103,13 @@ class CreateProductReviewView(APIView):
         user = self.request.user
         data = self.request.data
 
-        try:
-            product_id = int(productId)
-        except:
-            return Response(
-                {'error': 'El ID del producto debe ser un entero'},
-                status=status.HTTP_404_NOT_FOUND
-            )
+        # try:
+        #     product_id = int(productId)
+        # except:
+        #     return Response(
+        #         {'error': 'El ID del producto debe ser un entero'},
+        #         status=status.HTTP_404_NOT_FOUND
+        #     )
         
         try:
             rating = float(data['rating'])
@@ -126,15 +126,15 @@ class CreateProductReviewView(APIView):
                 {'error': 'Debe pasar un comentario al crear una reseña.'},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+       
         try:
-            if not Product.objects.filter(id=product_id).exists():
+            if not Product.objects.filter(id=productId).exists():
                 return Response(
                     {'error': 'El producto no existe'},
                     status=status.HTTP_404_NOT_FOUND
                 )
             
-            product = Product.objects.get(id=product_id)
+            product = Product.objects.get(id=productId)
 
             result = {}
             results = []
@@ -409,7 +409,7 @@ class FilterProductReviewsView(APIView):
             
             return Response(
                 {'reviews': results},
-                status=status.HTTP_201_CREATED
+                status=status.HTTP_200_OK
             )
 
 

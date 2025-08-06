@@ -12,8 +12,8 @@ import {
     DELETE_REVIEW_FAIL,
     FILTER_REVIEWS_SUCCESS,
     FILTER_REVIEWS_FAIL
-} from '../actions/types';
-import { setAlert } from '../actions/alert';
+} from './types';
+import { setAlert } from './alert';
 
 
 export const get_reviews = (product_id) => async dispatch => {
@@ -210,7 +210,7 @@ export const delete_review = (product_id) => async dispatch => {
 
 
 export const filter_review = (product_id, rating) => async dispatch => {
- 
+       
         const config = {
             headers: {
                 'Accept': 'application/json',
@@ -240,10 +240,13 @@ export const filter_review = (product_id, rating) => async dispatch => {
         else
             myRating = '5.0';
 
+        
+
         try {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/reviews/filter-reviews/${product_id}?rating=${myRating}`, config);
-
+          
             if (res.status === 200) {
+                
                 dispatch({
                     type: FILTER_REVIEWS_SUCCESS,
                     payload: res.data

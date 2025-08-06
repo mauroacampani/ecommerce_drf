@@ -11,7 +11,7 @@ import {
     DELETE_REVIEW_FAIL,
     FILTER_REVIEWS_SUCCESS,
     FILTER_REVIEWS_FAIL
-} from '../actions/types;';
+} from '../actions/types';
 
 const initialState = {
     review: null,

@@ -20,7 +20,7 @@ class GetItemsView(APIView):
                     item = {}
                     item['id'] = wishlist_item.id
                     product = Product.objects.get(id=wishlist_item.product.id)
-                    product = ProductSerializer(product)
+                    product = ProductSerializer(product, context={'request': request})
                     item['product'] = product.data
                     result.append(item)
             

@@ -80,7 +80,7 @@ const WishlistItem = ({
                 </div>
 
                 <div className="mt-4 sm:mt-0 sm:pr-9">
-                    <form onSubmit={e => onSubmit(e)}>
+                    {/* <form onSubmit={e => onSubmit(e)}>
                     <label htmlFor='item_count' className="sr-only">
                     Quantity, {item.product.name}
                     </label>
@@ -105,7 +105,7 @@ const WishlistItem = ({
                         <span className="mx-2">Actualizar</span>
                         
                     </button>
-                    </form>
+                    </form> */}
                     <div className="absolute top-0 right-0">
                     <button 
                     onClick={removeItemHandler} 

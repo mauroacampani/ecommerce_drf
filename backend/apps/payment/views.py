@@ -41,7 +41,7 @@ class GetPaymentTotalView(APIView):
     def get(self, request, format=None):
         user = self.request.user
 
-        tax = 0.18
+        # tax = 0.18
 
         shipping_id = request.query_params.get('shipping_id')
         shipping_id = str(shipping_id)
@@ -94,25 +94,26 @@ class GetPaymentTotalView(APIView):
                         fixed_price_coupon = FixedPriceCoupon.objects.get(name=coupon_name)
                  
                         discount_amount = float(fixed_price_coupon.discount_price)
+                        total_after_coupon = total_amount
                         if discount_amount < total_amount:
                             total_amount -= discount_amount
                            
-                            total_after_coupon = total_amount
                     elif PercentageCoupon.objects.filter(name__iexact=coupon_name).exists():
                         percentage_coupon = PercentageCoupon.objects.get(name=coupon_name)
                         discount_percentage = float(percentage_coupon.discount_percentage)
 
                         if discount_percentage > 1 and discount_percentage < 100:
-                            total_amount -= (total_amount * (discount_percentage / 100))
                             total_after_coupon = total_amount
+                            total_amount -= (total_amount * (discount_percentage / 100))
+                            
 
                 #Total despues del cupon
                 total_after_coupon = round(total_after_coupon, 2)
 
                 # Impuesto estimado
-                estimated_tax = round(total_amount * tax, 2)
+                # estimated_tax = round(total_amount * tax, 2)
 
-                total_amount += (total_amount * tax)
+                # total_amount += (total_amount * tax)
                 
                 shipping_cost = 0.0
                 # verificar que el envio sea valido
@@ -131,7 +132,7 @@ class GetPaymentTotalView(APIView):
                     'total_after_coupon': f'{total_after_coupon:.2f}',
                     'total_amount': f'{total_amount:.2f}',
                     'total_compare_amount': f'{total_compare_amount:.2f}',
-                    'estimated_tax': f'{estimated_tax:.2f}',
+                    # 'estimated_tax': f'{estimated_tax:.2f}',
                     'shipping_cost': f'{shipping_cost:.2f}'
                 },
                     status=status.HTTP_200_OK
@@ -149,7 +150,7 @@ class ProcessPaymentView(APIView):
         user = self.request.user
         data = self.request.data
 
-        tax = 0.18
+        # tax = 0.18
 
         nonce = data['nonce']
         shipping_id = str(data['shipping_id'])
@@ -224,7 +225,7 @@ class ProcessPaymentView(APIView):
              
  
 
-        total_amount += (total_amount * tax)
+        # total_amount += (total_amount * tax)
 
         shipping = Shipping.objects.get(id=int(shipping_id))
 

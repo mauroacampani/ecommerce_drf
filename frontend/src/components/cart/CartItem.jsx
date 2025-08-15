@@ -76,6 +76,7 @@ const CartItem = ({
                         <p className="ml-4 pl-4 border-l border-gray-200 text-gray-500">{product.size}</p>
                     ) : null} */}
                     </div>
+                    <p className="mt-1 text-sm font-medium text-gray-500 line-through" >{item.product.compare_price}</p>
                     <p className="mt-1 text-sm font-medium text-gray-900">{item.product.price}</p>
                 </div>
 
@@ -101,15 +102,15 @@ const CartItem = ({
                         <option>8</option>
                         <option>9</option>
                     </select>
-                    <button type="submit" className="-m-2 p-2 inline-flex text-gray-400 hover:text-gray-500">
-                        <span className="mx-2">Actualizar</span>
+                    <button type="submit" className="-m-2 p-2 inline-flex text-blue-500 hover:text-blue-700 ">
+                        <span className="mx-2 cursor-pointer">Actualizar</span>
                         
                     </button>
                     </form>
                     <div className="absolute top-0 right-0">
                     <button 
                     onClick={removeItemHandler} 
-                    className="-m-2 p-2 inline-flex text-gray-400 hover:text-gray-500">
+                    className="-m-2 p-2 inline-flex text-red-400 hover:text-red-500 cursor-pointer">
                         <span className="sr-only">Remove</span>
                         <XMarkIcon className="h-5 w-5" aria-hidden="true" />
                     </button>

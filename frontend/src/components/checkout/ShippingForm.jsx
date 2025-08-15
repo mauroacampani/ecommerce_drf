@@ -17,7 +17,7 @@ const ShippingForm = ({
     renderShipping,
     total_amount,
     total_compare_amount,
-    estimated_tax,
+    // estimated_tax,
     shipping_cost,
     shipping_id,
     shipping,
@@ -34,7 +34,7 @@ const ShippingForm = ({
             className="mt-16 bg-gray-50 rounded-lg px-4 py-6 sm:p-6 lg:p-8 lg:mt-0 lg:col-span-5"
           >
             <h2 id="summary-heading" className="text-lg font-medium text-gray-900">
-              Order summary
+              Resumen de compra
             </h2>
 
             <dl className="mt-6 space-y-4">
@@ -45,7 +45,7 @@ const ShippingForm = ({
               <div className="flex items-center justify-between">
                 <form onSubmit={e => apply_coupon(e)}>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                        Discount Coupon
+                        Cupón de descuento
                     </label>
                     <div className="mt-1 flex rounded-md shadow-sm">
                         <div className="relative flex items-stretch flex-grow focus-within:z-10">
@@ -56,7 +56,7 @@ const ShippingForm = ({
                             onChange={e => onChange(e)}
                             value={coupon_name}
                             className="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-none rounded-l-md pl-4 sm:text-sm border-gray-300"
-                            placeholder="Enter Code"
+                            placeholder="Insertar código"
                         />
                         </div>
                         <button
@@ -64,7 +64,7 @@ const ShippingForm = ({
                         className="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
                         >
                         <TicketIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                        <span>Apply Coupon</span>
+                        <span>Aplicar cupón</span>
                         </button>
                         
                     </div>
@@ -97,7 +97,7 @@ const ShippingForm = ({
                 </dt>
                 <dd className="text-sm font-medium text-gray-900">{shipping && shipping_id !== 0 ? <>${shipping_cost}</>:<><h6 className="text-red-600">Elige una opcion de envío</h6></>}</dd>
               </div>
-              <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
+              {/* <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                 <dt className="flex text-sm text-gray-600">
                   <span>Impuesto estimado</span>
                   <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
@@ -106,7 +106,7 @@ const ShippingForm = ({
                   </a>
                 </dt>
                 <dd className="text-sm font-medium text-gray-900">${estimated_tax}</dd>
-              </div>
+              </div> */}
 
               <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                 <dt className="flex text-sm text-gray-600 " >
@@ -126,7 +126,7 @@ const ShippingForm = ({
                 <>
                 <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                 <dt className="flex text-sm text-gray-600 " >
-                  <span>Descuento total</span>
+                  <span>Total sin cupón</span>
                   <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Learn more about how tax is calculated</span>
                     <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />

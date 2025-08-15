@@ -23,7 +23,7 @@ class GetItemsView(APIView):
                     item['id'] = cart_item.id
                     item['count'] = cart_item.count
                     product = Product.objects.get(id=cart_item.product.id)
-                    product = ProductSerializer(product)
+                    product = ProductSerializer(product, context={'request': request})
 
                     item['product'] = product.data
 
@@ -188,7 +188,7 @@ class UpdateItemView(APIView):
                         item['id'] = cart_item.id
                         item['count'] = cart_item.count
                         product = Product.objects.get(id=cart_item.product.id)
-                        product = ProductSerializer(product)
+                        product = ProductSerializer(product, context={'request': request})
 
                         item['product'] = product.data
 

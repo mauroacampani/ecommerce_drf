@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const ProductCard = ({product}) => {
- 
+
     return(
       
             <div key={product.id} className="group relative mx-2">

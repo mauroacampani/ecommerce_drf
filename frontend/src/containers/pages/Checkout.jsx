@@ -201,6 +201,7 @@ const Checkout = ({
   }
 };
 
+  const [render, setRender] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -218,13 +219,14 @@ const Checkout = ({
         get_payment_total(shipping_id, 'default')
     }, [shipping_id, coupon]);
 
-    const [render, setRender] = useState(false);
+  
 
     if (!isAuthenticated)
         
         return <Navigate to='/' />
 
     const showItems = () => {
+      
         return(
         <div>
            
@@ -239,14 +241,14 @@ const Checkout = ({
                     return(
                         <div key={index}>
                             <CartItem
-                            item={item}
+                                item={item}
                                 count={count}
                                 update_item={update_item}
                                 render={render}
                                 remove_item={remove_item}
                                 setRender={setRender}
                                 serAlert={setAlert}
-                                >
+                            >
                                 
                             </CartItem>
                         </div>

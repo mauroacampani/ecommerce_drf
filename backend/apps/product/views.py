@@ -105,7 +105,7 @@ class ListSearchView(APIView):
             )
 
         if category_id == 0:
-            search_results = ProductSerializer(search_results, many=True)
+            search_results = ProductSerializer(search_results, many=True, context={'request': request})
             return Response(
                 {'search_products': search_results.data},
                 status=status.HTTP_200_OK
@@ -141,7 +141,7 @@ class ListSearchView(APIView):
                 search_results = search_results.order_by('-date_created').filter(category__in=filterd_categories)
 
         
-        search_results = ProductSerializer(search_results, many=True)
+        search_results = ProductSerializer(search_results, many=True, context={'request': request})
         return Response({'search_products': search_results.data}, status=status.HTTP_200_OK)
     
 
@@ -291,7 +291,7 @@ class ListBySearchView(APIView):
         else:
             product_results = product_results.order_by(sort_by)
 
-        product_results = ProductSerializer(product_results, many=True)
+        product_results = ProductSerializer(product_results)
 
         if len(product_results.data) > 0:
             return Response(

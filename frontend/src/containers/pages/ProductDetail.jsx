@@ -57,13 +57,17 @@ const ProductDetail = ({
         await get_items();
         await get_total();
         await get_item_total();
+        await get_wishlist_items();
         setLoading(false);
         navigate('/cart')
       }
     }
-
+  
     const addToWishlist = async () => {
+     
       if (isAuthenticated) {
+        
+        
         let isPresent = false;
         if(
           wishlist &&
@@ -74,8 +78,10 @@ const ProductDetail = ({
           product !== undefined
         ){
           wishlist.map(item => {
+           
             if (item.product.id.toString() === product.id.toString()){
               isPresent = true;
+          
             }
           });
         }
@@ -85,7 +91,7 @@ const ProductDetail = ({
           await get_wishlist_items();
           await get_wishlist_item_total();
         }else {
-          await remove_wishlist_item(product.id);
+          // await remove_wishlist_item(product.id);
           await add_wishlist_item(product.id);
           await get_wishlist_items();
           await get_wishlist_item_total();
@@ -437,7 +443,7 @@ const ProductDetail = ({
 const mapStateToProps = state => ({
     product: state.Products.product,
     isAuthenticated: state.Auth.isAuthenticated,
-    wishlist: state.Wishlist.wishlist,
+    wishlist: state.Wishlist.items,
     review: state.Reviews.review,
     reviews: state.Reviews.reviews
 })

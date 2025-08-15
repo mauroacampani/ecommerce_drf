@@ -48,14 +48,14 @@ const Cart = ({
                     return(
                         <div key={index}>
                             <CartItem
-                            item={item}
+                                item={item}
                                 count={count}
                                 update_item={update_item}
                                 render={render}
                                 remove_item={remove_item}
                                 setRender={setRender}
                                 serAlert={setAlert}
-                                >
+                            >
                                 
                             </CartItem>
                         </div>
@@ -137,7 +137,7 @@ const checkoutButton = () => {
                 <button
                 className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
             >
-                Checkout
+                Continuar Compra
                 </button>
             </Link>
             </>
@@ -175,13 +175,13 @@ const checkoutButton = () => {
                         className="mt-16 bg-gray-50 rounded-lg px-4 py-6 sm:p-6 lg:p-8 lg:mt-0 lg:col-span-5"
                     >
                         <h2 id="summary-heading" className="text-lg font-medium text-gray-900">
-                        Order summary
+                        Resumen de compra
                         </h2>
 
                         <dl className="mt-6 space-y-4">
                         <div className="flex items-center justify-between">
-                            <dt className="text-sm text-gray-600">Subtotal</dt>
-                            <dd className="text-sm font-medium text-gray-900">${compare_amount.toFixed(2)}</dd>
+                            <dt className="text-sm text-gray-600">Productos ({total_items}) sin descuento </dt>
+                            <dd className="text-sm font-medium text-gray-900 line-through">${compare_amount.toFixed(2)}</dd>
                         </div>
 
                     

@@ -1,4 +1,4 @@
-import { HeartIcon } from '@heroicons/react/24/outline';
+import { HeartIcon } from '@heroicons/react/24/solid';
 
 const WishlistHeart = ({
     addToWishlist,
@@ -8,6 +8,7 @@ const WishlistHeart = ({
     
 
     const renderWishlistHeart = () => {
+      
         let selected = false;
         if (
         wishlist &&
@@ -18,6 +19,7 @@ const WishlistHeart = ({
         product !== undefined
     ) {
         wishlist.map(item => {
+            
             if (item.product.id.toString() === product.id.toString()) {
                 selected = true;
             }
@@ -29,9 +31,9 @@ const WishlistHeart = ({
         return (
              <button
             onClick={addToWishlist}
-            className="ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 bg-gray-200 hover:text-gray-500"
+            className="ml-4 py-3 px-3 rounded-md flex items-center justify-center text-blue-400"
         >
-            <HeartIcon className="h-6 w-6 flex-shrink-0" aria-hidden="true" />
+            <HeartIcon className="h-6 w-6 flex-shrink-0  cursor-pointer" aria-hidden="true" />
             <span className="sr-only">Add to favorites</span>
         </button>
         )
@@ -39,9 +41,9 @@ const WishlistHeart = ({
         return (
              <button
             onClick={addToWishlist}
-            className="ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+            className="ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 "
         >
-            <HeartIcon className="h-6 w-6 flex-shrink-0" aria-hidden="true" />
+            <HeartIcon className="h-6 w-6 flex-shrink-0 cursor-pointer" aria-hidden="true" />
             <span className="sr-only">Add to favorites</span>
         </button>
         )

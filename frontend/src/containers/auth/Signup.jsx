@@ -50,10 +50,12 @@ function Signup({
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
          <img
               alt=""
-              src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-              className="mx-auto h-12 w-auto"
+              src="logoEC.png"
+              className="mx-auto"
+              height={70}
+              width={80}
             />
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Registrar</h2>
+          <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">Registrarse</h2>
           
         </div>
 

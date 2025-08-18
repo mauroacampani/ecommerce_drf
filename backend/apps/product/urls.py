@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import ProductDetailView, ListProductsView, ListSearchView, ListBySearchView, ListRelatedView
+from .views import ProductDetailView, ListProductsView, ListSearchView, ListBySearchView, ListRelatedView, ComparePriceView
 
 app_name = "product"
 
@@ -10,4 +10,5 @@ urlpatterns = [
     path('search', ListSearchView.as_view()),
     path('related/<productId>', ListRelatedView.as_view()),
     path('by/search', ListBySearchView.as_view()),
+    path('compare-price', ComparePriceView.as_view()),
 ]

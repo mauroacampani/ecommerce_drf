@@ -72,7 +72,7 @@ export const get_products_by_arrival = () => async dispatch => {
     }
 }
 
-export const get_products_by_sold = () => async dispatch => {
+export const get_products_by_sold = (limit) => async dispatch => {
     const config = {
         headers: {
             'Accept': 'application/json'
@@ -80,7 +80,7 @@ export const get_products_by_sold = () => async dispatch => {
     };
 
     try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/get-products?sortBy=sold&order=desc&limit=5`, config);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/get-products?sortBy=sold&order=desc&limit=${limit}`, config);
 
         if (res.status === 200) {
             dispatch({

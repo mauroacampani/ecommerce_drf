@@ -20,7 +20,7 @@ const Home = ({
         window.scrollTo(0, 0);
 
         get_products_by_arrival();
-        get_products_by_sold();
+        get_products_by_sold(5);
     }, []);
 
     return(

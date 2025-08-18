@@ -5,11 +5,11 @@ export default function ProductsSold({
 }) {
   return (
     <div className="bg-white">
-      <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto sm:py-24 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-baseline sm:justify-between">
-          <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">Los mas vendidos</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900">Los mas vendidos</h2>
           <a href="#" className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block">
-            Browse all favorites<span aria-hidden="true"> &rarr;</span>
+            Ver todos las favoritos<span aria-hidden="true"> &rarr;</span>
           </a>
         </div>
 

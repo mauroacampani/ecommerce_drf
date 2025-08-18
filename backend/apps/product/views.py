@@ -6,7 +6,7 @@ from apps.product.models import Product
 from apps.product.serializers import ProductSerializer
 from apps.category.models import Category
 
-from django.db.models import Q
+from django.db.models import Q, F
 
 class ProductDetailView(APIView):
     permission_classes = (permissions.AllowAny, )
@@ -304,3 +304,21 @@ class ListBySearchView(APIView):
                 status=status.HTTP_200_OK
             )
         
+
+
+class ComparePriceView(APIView):
+    permission_classes = (permissions.AllowAny, )
+
+    def get(self, request, format=None):
+        
+        products = Product.objects.filter(compare_price__gte = 0, compare_price__gt = F('price'))
+
+        products = ProductSerializer(products, many=True, context={'request': request})
+
+        if products:
+            
+            return Response({'products': products.data}, status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {'error': 'No products to list'},
+                status=status.HTTP_404_NOT_FOUND)

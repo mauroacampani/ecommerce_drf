@@ -53,10 +53,12 @@ function Login({
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
          <img
               alt=""
-              src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-              className="mx-auto h-12 w-auto"
+              src="logoTechStore.png"
+              className="mx-auto"
+              height={120}
+              width={120}
             />
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Iniciar Sesión</h2>
+          <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">Iniciar Sesión</h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
             <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">

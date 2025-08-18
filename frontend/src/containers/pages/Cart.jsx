@@ -41,7 +41,7 @@ const Cart = ({
                 items.length !== 0 &&
                 items.map((item, index) => {
                     let count = item.count;
-
+                    
                     return(
                         <div key={index}>
                             <CartItem

@@ -207,7 +207,7 @@ class RemoveItemView(APIView):
     def delete(self, request, format=None):
         user = self.request.user
         data = self.request.data
-
+   
         try:
             product_id = int(data['product_id'])
         except:

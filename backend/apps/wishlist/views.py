@@ -136,10 +136,11 @@ class GetItemTotalView(APIView):
 
 
 class RemoveItemView(APIView):
+
     def delete(self, request, format=None):
         user = self.request.user
         data = self.request.data
-
+        
         try:
             product_id = int(data['product_id'])
         except:
@@ -147,7 +148,7 @@ class RemoveItemView(APIView):
                 {'error': 'El id del producto debe ser un entero'},
                 status=status.HTTP_404_NOT_FOUND
             )
-
+        
         try:
             wishlist = WishList.objects.get(user=user)
             if not Product.objects.filter(id=product_id).exists():

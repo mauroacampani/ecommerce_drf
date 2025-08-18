@@ -46,6 +46,7 @@ const CartItem = ({
     }
 
      const removeItemHandler = async () => {
+        
         await remove_item(item);
         setRender(!render);
     };

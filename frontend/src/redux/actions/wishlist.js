@@ -104,12 +104,12 @@ export const get_wishlist_item_total = () => async dispatch => {
     }
 }
 
-export const remove_wishlist_item = product_id => async dispatch => {
+export const remove_wishlist_item = item => async dispatch => {
+   
     if (localStorage.getItem('access')) {
-        const body = JSON.stringify({
-            product_id
-        });
-
+        const product_id = item.product.id;
+        const body = JSON.stringify({ product_id });
+        
         const config = {
             headers: {
                 'Authorization': `JWT ${localStorage.getItem('access')}`,

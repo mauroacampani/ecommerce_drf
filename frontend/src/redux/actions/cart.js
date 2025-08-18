@@ -306,7 +306,7 @@ export const remove_item = item => async dispatch => {
             },
             data: body
         };
-
+console.log(body)
         
 
         try {

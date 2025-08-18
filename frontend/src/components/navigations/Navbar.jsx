@@ -28,9 +28,10 @@ import {
   FingerPrintIcon,
   SquaresPlusIcon,
   XMarkIcon,
+ 
   
 } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon, ShoppingCartIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, PhoneIcon, PlayCircleIcon, ShoppingCartIcon, BellIcon } from '@heroicons/react/20/solid'
 import { connect } from 'react-redux'
 
 const products = [
@@ -52,7 +53,8 @@ function Navbar({
   get_categories,
   categories,
   get_search_products,
-  total_items
+  total_items,
+  wishlist_total_items
 }) {
   const navigate = useNavigate();
   const [redirect, setRedirect] = useState(false);
@@ -278,8 +280,14 @@ function Navbar({
           categories={categories}></SearchBox>
           
           <div className='flex items-center md:ml-12'>
+            <Link to="/wishlist">
+           
+          <BellIcon className="h-8 w-8 text-gray-400 cursor-pointer mr-4"  />
+          <span className="text-xs absolute top-1 mt-4 ml-5 bg-red-500 text-white font-semibold rounded-full px-2 text-center">{wishlist_total_items}</span>
+          </Link>
+            
           <Link to="/cart">
-          
+           
           <ShoppingCartIcon className="h-8 w-8 text-gray-400 cursor-pointer mr-4"/>
           <span className="text-xs absolute top-1 mt-4 ml-5 bg-red-500 text-white font-semibold rounded-full px-2 text-center">{total_items}</span>
           </Link>
@@ -353,7 +361,7 @@ function Navbar({
               </div>
               <div className="py-6">
                 <Link to="/cart">
-          
+          <BellIcon className="h-8 w-8 text-gray-400 cursor-pointer mr-4"  />
           <ShoppingCartIcon className="h-8 w-8 text-gray-400 cursor-pointer mr-4"/>
           <span className="text-xs absolute top-1 mt-4 ml-5 bg-red-500 text-white font-semibold rounded-full px-2 text-center">{total_items}</span>
           </Link>
@@ -375,7 +383,8 @@ const mapStateToProps = state => ({
   isAuthenticated: state.Auth.isAuthenticated,
   user: state.Auth.user, 
   categories: state.Categories.categories,
-  total_items: state.Cart.total_items
+  total_items: state.Cart.total_items,
+  wishlist_total_items: state.Wishlist.total_items
 })
 export default connect(mapStateToProps, {
  logout,

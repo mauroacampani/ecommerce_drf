@@ -1,54 +1,57 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { setAlert } from "../../redux/actions/alert";
+// import { setAlert } from "../../redux/actions/alert";
 import { CheckIcon, ClockIcon, XMarkIcon } from '@heroicons/react/20/solid'
 
 const WishlistItem = ({
        
     item,
     count,
-    update_item,
+    // update_item,
     remove_wishlist_item,
     render,
     setRender, 
-    setAlert
+    // setAlert
 }) => {
 
     const [formData, setFormData] = useState({
         item_count: 1
     });
 
-    const { item_count } = formData;
+    // const { item_count } = formData;
 
     useEffect(() => {
         if (count)
             setFormData({ ...formData, item_count: count})
     }, [count]);
 
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+    // const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const onSubmit = e => {
-        e.preventDefault();
+    // const onSubmit = e => {
+    //     e.preventDefault();
 
-        const fetchData = async () => {
-            try {
-                if (item.product.quantity >= item_count) {
-                    await update_item(item, item_count);
-                }else{
-                    setAlert('No hay suficiente stock', 'red')
-                }
-                setRender(!render)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchData();
-    }
+    //     const fetchData = async () => {
+    //         try {
+    //             if (item.product.quantity >= item_count) {
+    //                 await update_item(item, item_count);
+    //             }else{
+    //                 setAlert('No hay suficiente stock', 'red')
+    //             }
+    //             setRender(!render)
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
+    //     fetchData();
+    // }
 
      const removeItemHandler = async () => {
+       
         await remove_wishlist_item(item);
-        window.location.reload(false);
+        setRender(!render);
     };
+
+        
 
     return(
         <li className="flex py-6 sm:py-10">

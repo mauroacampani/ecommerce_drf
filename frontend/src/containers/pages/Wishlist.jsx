@@ -25,8 +25,10 @@ const Wishlist = ({
     }, [render]);
 
 
+        
+
     const showWishlistItems = () => {
-        console.log(wishlist_items)
+
         return(
         <div>
            
@@ -58,14 +60,13 @@ const Wishlist = ({
         )
     }
 
-
-    const RemoveWishlistItem = (e) => {
-        e.preventDefault();
-
-        remove_wishlist_item()
+// const removeWishlistItem = (e) => {
+//         e.preventDefault();
+//         remove_wishlist_item()
 
 
-    }
+//     }
+
 
     return (
         <Layout>

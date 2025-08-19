@@ -15,6 +15,8 @@ import{
     RELATED_PRODUCTS_FAIL,
     FILTER_PRODUCTS_SUCCESS,
     FILTER_PRODUCTS_FAIL,
+    COMPARE_PRICE_SUCCESS,
+    COMPARE_PRICE_FAIL,
 }from './types';
 
 export const get_products = () => async dispatch => {
@@ -209,6 +211,7 @@ export const get_search_products = (search, category_id) => async dispatch => {
         
     }
 
+
     try {
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/product/search`, body, config);
 
@@ -227,6 +230,34 @@ export const get_search_products = (search, category_id) => async dispatch => {
         console.log(error)
         dispatch({
                 type: SEARCH_PRODUCTS_FAIL
+            })
+    }
+}
+
+export const get_products_compare_price = () => async dispatch => {
+    const config = {
+        headres: {
+            'Accept': 'application/json'
+        }
+    };
+
+    try {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/product/compare-price`, config);
+
+        if (res.status == 200){
+            dispatch({
+                type: COMPARE_PRICE_SUCCESS,
+                payload: res.data
+            });
+        } else {
+            dispatch({
+                type: COMPARE_PRICE_FAIL
+            })
+        }
+    } catch (error) {
+        console.log(error)
+        dispatch({
+                type: COMPARE_PRICE_FAIL
             })
     }
 }

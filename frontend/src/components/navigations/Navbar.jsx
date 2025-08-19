@@ -83,6 +83,7 @@ function Navbar({
 
   const onSubmit = e => {
       e.preventDefault()
+      
       get_search_products(search, category_id)
       navigate('/search');
       
@@ -197,7 +198,7 @@ function Navbar({
     <>
     <header className="bg-white">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
-        <div className="flex lg:flex-1">
+        {/* <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <img
@@ -206,6 +207,11 @@ function Navbar({
              
             />
           </a>
+        </div> */}
+        <div className="flex-shrink-0 flex items-center">
+            <a href="/" className="text-2xl font-bold text-gray-700">
+                Tech<span className="text-yellow-400">Store</span>
+            </a>
         </div>
         <div className="flex lg:hidden">
           <Link
@@ -213,7 +219,7 @@ function Navbar({
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
           >
             <span className="sr-only">Open main menu</span>
-            <ShoppingCartIcon className="h-6 w-6 text-gray-400 cursor-pointer mr-4" aria-hidden="true" />
+            <ShoppingCartIcon className="h-12 w-12 text-gray-400 cursor-pointer mr-4" aria-hidden="true" />
           </Link>
           
           <button
@@ -268,28 +274,35 @@ function Navbar({
             </PopoverPanel>
           </Popover>
 
-          
-          <Link to="/shop" className="mt-2 text-sm/6 font-semibold text-gray-900">
+          <div className='hidden sm:ml-6 sm:flex sm:space-x-8'>
+          <Link to="/shop" className="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
             Tienda
           </Link>
-          
+
+          <Link to="/" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+            Notebooks
+          </Link>
+          </div>
+
           <SearchBox 
           search={search}
           onChange={onChange}
           onSubmit={onSubmit}
           categories={categories}></SearchBox>
-          
+     
+ 
           <div className='flex items-center md:ml-12'>
             <Link to="/wishlist">
-           
-          <BellIcon className="h-8 w-8 text-gray-400 cursor-pointer mr-4"  />
-          <span className="text-xs absolute top-1 mt-4 ml-5 bg-red-500 text-white font-semibold rounded-full px-2 text-center">{wishlist_total_items}</span>
+           {isAuthenticated && (
+              <BellIcon className="h-8 w-8 text-gray-400 cursor-pointer mr-4" />
+            )}
+          <span className="text-xs absolute top-1 mt-4 ml-5 bg-indigo-600 text-white font-semibold rounded-full px-2 text-center">{wishlist_total_items}</span>
           </Link>
             
           <Link to="/cart">
            
           <ShoppingCartIcon className="h-8 w-8 text-gray-400 cursor-pointer mr-4"/>
-          <span className="text-xs absolute top-1 mt-4 ml-5 bg-red-500 text-white font-semibold rounded-full px-2 text-center">{total_items}</span>
+          <span className="text-xs absolute top-1 mt-4 ml-5 bg-indigo-600 text-white font-semibold rounded-full px-2 text-center">{total_items}</span>
           </Link>
         {isAuthenticated ? authLinks : guestLinks}
         </div>
@@ -298,6 +311,10 @@ function Navbar({
   
         
       </nav>
+
+
+    
+      {/* MENU MOBILE */}
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-50" />
         <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">

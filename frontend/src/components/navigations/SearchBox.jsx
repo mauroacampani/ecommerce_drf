@@ -30,7 +30,7 @@ const SearchBox = ({ categories, search, onChange, onSubmit }) => {
               onChange={onChange}
               value={search}
               required
-              className="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-none rounded-l-md pl-2 sm:text-sm border-gray-300"
+              className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               placeholder="¿Qué buscas hoy?"
             />
           </div>

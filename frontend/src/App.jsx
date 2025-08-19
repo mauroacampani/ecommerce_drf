@@ -23,6 +23,7 @@ import DashboardPayments from './containers/pages/DashboardPayments';
 import DashboardPaymentDetail from './containers/pages/DashboardPaymentDetail';
 import DashboardProfile from './containers/pages/DashboardProfile';
 import Wishlist from './containers/pages/Wishlist';
+import ComparePrice from './containers/ComparePrice';
 
 
 
@@ -40,6 +41,8 @@ function App() {
           <Route exact path="/cart" element={<Cart/>}></Route>
           <Route exact path="/wishlist" element={<Wishlist/>}></Route>
           <Route exact path='/checkout' element={<Checkout/>}/>
+
+          <Route exact path='/compare_price' element={<ComparePrice/>}/>
 
           <Route exact path='/thankyou' element={<ThankYou/>}/>
           <Route exact path='/dashboard' element={<Dashboard/>}/>

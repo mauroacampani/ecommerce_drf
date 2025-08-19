@@ -122,13 +122,14 @@ class ListSearchView(APIView):
 
         category = Category.objects.get(id=category_id)
 
+
         #Si la categoria tiene un padre, filtrar solo por la categoria y no el padre 
         if category.parent:
             search_results = search_results.order_by('-date_created').filter(category=category)
         else:
             #si esta categoria padre no tiene hijos filtar solo la categoria
             if not Category.objects.filter(parent=category).exists():
-                search_results = search_results.order_by('-date_created').filter(parent=category)
+                search_results = search_results.order_by('-date_created').filter(category=category)
             else:
                 categories = Category.objects.filter(parent=category)
                 filterd_categories = [category]
@@ -311,7 +312,9 @@ class ComparePriceView(APIView):
 
     def get(self, request, format=None):
         
-        products = Product.objects.filter(compare_price__gte = 0, compare_price__gt = F('price'))
+        products = Product.objects.filter(
+            Q(compare_price__gt=0) & Q(compare_price__gt=F('price'))
+        ).order_by('-date_created')
 
         products = ProductSerializer(products, many=True, context={'request': request})
 

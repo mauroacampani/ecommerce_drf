@@ -13,6 +13,8 @@ import{
     RELATED_PRODUCTS_FAIL,
     FILTER_PRODUCTS_SUCCESS,
     FILTER_PRODUCTS_FAIL,
+    COMPARE_PRICE_SUCCESS,
+    COMPARE_PRICE_FAIL  
 }from '../actions/types';
 
 const initialState = {
@@ -107,6 +109,17 @@ const initialState = {
                  ...state,
                  search_products: null
              }
+
+        case COMPARE_PRICE_SUCCESS:
+            return {
+                ...state,
+                products: payload.products
+            }
+        case COMPARE_PRICE_FAIL:
+            return{
+                ...state,
+                products: null
+            }
          default: 
              return state
      }

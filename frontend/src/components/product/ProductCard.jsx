@@ -12,7 +12,14 @@ const ProductCard = ({product}) => {
                   className="w-full h-full object-center object-cover lg:w-full lg:h-full"
                 />
               </div>
+              <div>
+                <p className="text-sm font-medium text-gray-900 line-through">${product.compare_price}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-900">${product.price}</p>
+              </div>
               <div className="mt-4 flex justify-between">
+                
                 <div>
                   <h3 className="text-sm text-gray-700">
                     <Link to={`/product/${product.id}`}>
@@ -22,7 +29,8 @@ const ProductCard = ({product}) => {
                   </h3>
                  
                 </div>
-                <p className="text-sm font-medium text-gray-900">${product.price}</p>
+                
+
               </div>
             </div>
     

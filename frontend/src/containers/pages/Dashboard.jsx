@@ -135,7 +135,7 @@ const Dashboard = ({
                 <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex flex-col flex-grow border-r border-gray-200 pt-5 bg-white overflow-y-auto">
-                    <div className="flex items-center flex-shrink-0 px-4">
+                    {/* <div className="flex items-center flex-shrink-0 px-4">
                          <Link to="/">
                     <img
                         className="h-8 w-auto cursor"
@@ -143,6 +143,11 @@ const Dashboard = ({
                         alt="Workflow"
                     />
                     </Link>
+                    </div> */}
+                    <div className="flex-shrink-0 flex items-center ml-4">
+                        <a href="/" className="text-2xl font-bold text-gray-700">
+                            Tech<span className="text-yellow-400">Store</span>
+                        </a>
                     </div>
                     <div className="mt-5 flex-grow flex flex-col">
                     <nav className="flex-1 px-2 pb-4 space-y-1">
@@ -240,13 +245,13 @@ const Dashboard = ({
           
                         <div className="max-w-3xl mx-auto">
                             <div>
-                                <h3 className="text-lg leading-6 font-medium text-gray-900">Applicant Information</h3>
-                                <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p>
+                                <h3 className="text-lg leading-6 font-medium text-gray-900">Información de usuario</h3>
+                                <p className="mt-1 max-w-2xl text-sm text-gray-500">Datos personales.</p>
                             </div>
                             <div className="mt-5 border-t border-gray-200">
                                 <dl className="divide-y divide-gray-200">
                                 <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
-                                    <dt className="text-sm font-medium text-gray-500">Full name</dt>
+                                    <dt className="text-sm font-medium text-gray-500">Nombre y Apellido</dt>
                                     <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                     <span className="flex-grow">{user.first_name} {user.last_name}</span>
                                     
@@ -254,7 +259,7 @@ const Dashboard = ({
                                 </div>
                                 
                                 <div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
-                                    <dt className="text-sm font-medium text-gray-500">Email address</dt>
+                                    <dt className="text-sm font-medium text-gray-500">Direccion de Email</dt>
                                     <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                     <span className="flex-grow">{user.email}</span>
                                     

@@ -8,11 +8,11 @@ User = get_user_model()
 
 class Order(models.Model):
     class OrderStatus(models.TextChoices):
-        not_processed = 'not_processed'
-        processed = 'processed'
-        shipping = 'shipping'
-        delivered = 'delivered'
-        cancelled = 'cancelled'
+        not_processed = 'No procesado'
+        processed = 'Procesado'
+        shipping = 'Enviado'
+        delivered = 'Entregado'
+        cancelled = 'Cancelado'
 
     status = models.CharField(max_length=50, choices=OrderStatus.choices, default=OrderStatus.not_processed)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

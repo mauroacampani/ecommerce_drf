@@ -57,7 +57,7 @@ const DashboardLink = () => {
                 )}
                 aria-hidden="true"
                 />
-                Payment History
+                Compras Realizadas
             </Link>
 
             <Link

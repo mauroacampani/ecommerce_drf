@@ -75,7 +75,7 @@ const DashboardPaymentDetail = ({
     const params = useParams();
     
     const transaction_id = params.transaction_id
-
+   
 
     useEffect(() => {
         get_order_detail(transaction_id)
@@ -287,16 +287,18 @@ const DashboardPaymentDetail = ({
                                     <h2 className="sr-only">Products purchased</h2>
 
                                     <div className="space-y-24">
-                                        {order.order_items.map((product) => (
-                                        <div
-                                            key={product.transaction_id}
+                                         <div
+                                            
                                             className="grid grid-cols-1 text-sm sm:grid-rows-1 sm:grid-cols-12 sm:gap-x-6 md:gap-x-8 lg:gap-x-8"
                                         >
-                                            {/* <div className="mt-6 sm:col-span-7 sm:mt-0 md:row-end-1">
+                                        {order.order_items.map((product) => (
+                                            <>
+                                       
+                                            <div key={product.transaction_id} className="mt-6 sm:col-span-7 sm:mt-0 md:row-end-1">
                                             <div className="aspect-w-1 aspect-h-1 bg-gray-50 rounded-lg overflow-hidden">
-                                                <img src={product.photo} alt={product.imageAlt} className="object-center object-cover" />
+                                                <img src={`http://localhost:8000${product.photo}`}  alt={product.imageAlt} className="object-center object-cover" />
                                             </div>
-                                            </div> */}
+                                            </div>
                                             <div className="mt-6 sm:col-span-7 sm:mt-0 md:row-end-1">
                                             <h3 className="text-lg font-medium text-gray-900">
                                                 <a href={product.href}>{product.name}</a>
@@ -304,17 +306,19 @@ const DashboardPaymentDetail = ({
                                             <p className="font-medium text-gray-900 mt-1">${product.price}</p>
                                             <p className="text-gray-500 mt-3">{product.description}</p>
                                             </div>
+                                            </>
+                                               ))}
                                             <div className="sm:col-span-12 md:col-span-7">
                                             <dl className="grid grid-cols-1 gap-y-8 border-b py-8 border-gray-200 sm:grid-cols-2 sm:gap-x-6 sm:py-6 md:py-10">
                                                 <div>
                                                 <dt className="font-medium text-gray-900">Delivery address</dt>
                                                 <dd className="mt-3 text-gray-500">
-                                                    {/* <span className="block">{product.address[0]}</span>
-                                                    <span className="block">{product.address[1]}</span>
-                                                    <span className="block">{product.address[2]}</span> */}
+                                                    <span className="block">{order.address_line_1}</span>
+                                                    <span className="block">{order.address_line_2}</span>
+                                                 
                                                 </dd>
                                                 </div>
-                                                <div>
+                                                {/* <div>
                                                 <dt className="font-medium text-gray-900">Shipping updates</dt>
                                                 <dd className="mt-3 text-gray-500 space-y-3">
                                                     <p>{product.email}</p>
@@ -323,34 +327,37 @@ const DashboardPaymentDetail = ({
                                                     Edit
                                                     </button>
                                                 </dd>
-                                                </div>
+                                                </div> */}
                                             </dl>
+                                           
                                             <p className="font-medium text-gray-900 mt-6 md:mt-10">
-                                                {product.status} on <time dateTime={product.datetime}>{product.date}</time>
+                                                {order.status} - <time dateTime="2021-03-22">{moment(order.date_issued).fromNow()}</time>
                                             </p>
+                                             
                                             <div className="mt-6">
                                                 <div className="bg-gray-200 rounded-full overflow-hidden">
                                                 <div
                                                     className="h-2 bg-indigo-600 rounded-full"
-                                                    style={{ width: `calc((${product.step} * 2 + 1) / 8 * 100%)` }}
+                                                    style={{ width: `calc((${order.step} * 2 + 1) / 8 * 100%)` }}
                                                 />
                                                 </div>
                                                 <div className="hidden sm:grid grid-cols-4 font-medium text-gray-600 mt-6">
                                                 <div className="text-indigo-600">Order placed</div>
-                                                <div className={classNames(product.step > 0 ? 'text-indigo-600' : '', 'text-center')}>
+                                                <div className={classNames(order.step > 0 ? 'text-indigo-600' : '', 'text-center')}>
                                                     Processing
                                                 </div>
-                                                <div className={classNames(product.step > 1 ? 'text-indigo-600' : '', 'text-center')}>
+                                                <div className={classNames(order.step > 1 ? 'text-indigo-600' : '', 'text-center')}>
                                                     Shipped
                                                 </div>
-                                                <div className={classNames(product.step > 2 ? 'text-indigo-600' : '', 'text-right')}>
+                                                <div className={classNames(order.step > 2 ? 'text-indigo-600' : '', 'text-right')}>
                                                     Delivered
                                                 </div>
                                                 </div>
                                             </div>
                                             </div>
-                                        </div>
-                                        ))}
+                                         </div>
+                                           
+                                    
                                     </div>
                                     </div>
 

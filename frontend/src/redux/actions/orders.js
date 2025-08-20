@@ -37,7 +37,7 @@ export const list_orders = () => async dispatch => {
 }
 
 export const get_order_detail = transactionId  => async dispatch => {
-    
+   
     if (localStorage.getItem('access')) {
         const config = {
             headers: {
@@ -48,7 +48,7 @@ export const get_order_detail = transactionId  => async dispatch => {
 
         try {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/orders/get-orders/${transactionId}`, config);
-
+            console.log(res.data)
             if (res.status === 200) {
                 dispatch({
                     type: GET_ORDERS_DETAIL_SUCCESS,

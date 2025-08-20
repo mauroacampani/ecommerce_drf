@@ -175,7 +175,7 @@ const DashboardProfile = ({
                 <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex flex-col flex-grow border-r border-gray-200 pt-5 bg-white overflow-y-auto">
-                    <div className="flex items-center flex-shrink-0 px-4">
+                    {/* <div className="flex items-center flex-shrink-0 px-4">
                          <Link to="/">
                     <img
                         className="h-8 w-auto cursor"
@@ -183,6 +183,11 @@ const DashboardProfile = ({
                         alt="Workflow"
                     />
                     </Link>
+                    </div> */}
+                    <div className="flex-shrink-0 flex items-center ml-4">
+                        <a href="/" className="text-2xl font-bold text-gray-700">
+                            Tech<span className="text-yellow-400">Store</span>
+                        </a>
                     </div>
                     <div className="mt-5 flex-grow flex flex-col">
                     <nav className="flex-1 px-2 pb-4 space-y-1">

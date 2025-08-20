@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from rest_framework.views import APIView
 from .models import Order, OrderItem
+from .serializers import OrderSerializer
 
 class ListOrdersView(APIView):
     def get(self, request, format=None):
@@ -37,9 +38,10 @@ class ListOrdersView(APIView):
             )
         
 class ListOrderDetailView(APIView):
+   
     def get(self, request, transactionId, format=None):
         user = self.request.user
-
+        
         try:
             if Order.objects.filter(user=user, transaction_id=transactionId).exists():
                 order = Order.objects.get(user=user, transaction_id=transactionId)
@@ -63,22 +65,26 @@ class ListOrderDetailView(APIView):
                 result['date_issued'] = order.date_issued
 
                 order_items = OrderItem.objects.order_by('-date_added').filter(order=order)
-               
+                
                 result['order_items'] = []
-
+                
                 for order_item in order_items:
-                   
+                    
                     sub_item = {}
 
                     sub_item['name'] = order_item.name
                     sub_item['price'] = order_item.price
                     sub_item['count'] = order_item.count
                     sub_item['description'] = order_item.product.description
+                    sub_item['photo'] = order_item.product.get_thumbnail_url()
                     
                     
 
-                result['order_items'].append(sub_item)
+                    result['order_items'].append(sub_item)
+                
+                # order_ser = OrderSerializer(result, many=True, context={'request': request})
 
+               
                 return Response(
                     {'order': result},
                     status=status.HTTP_200_OK

@@ -94,17 +94,19 @@ class GetPaymentTotalView(APIView):
                         fixed_price_coupon = FixedPriceCoupon.objects.get(name=coupon_name)
                  
                         discount_amount = float(fixed_price_coupon.discount_price)
-                        total_after_coupon = total_amount
+                        
                         if discount_amount < total_amount:
                             total_amount -= discount_amount
+                            total_after_coupon = total_amount
                            
                     elif PercentageCoupon.objects.filter(name__iexact=coupon_name).exists():
                         percentage_coupon = PercentageCoupon.objects.get(name=coupon_name)
                         discount_percentage = float(percentage_coupon.discount_percentage)
 
                         if discount_percentage > 1 and discount_percentage < 100:
-                            total_after_coupon = total_amount
+                            
                             total_amount -= (total_amount * (discount_percentage / 100))
+                            total_after_coupon = total_amount
                             
 
                 #Total despues del cupon

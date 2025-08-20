@@ -292,9 +292,10 @@ class ListBySearchView(APIView):
         else:
             product_results = product_results.order_by(sort_by)
 
-        product_results = ProductSerializer(product_results)
-
+        product_results = ProductSerializer(product_results, many=True, context={'request': request})
+        
         if len(product_results.data) > 0:
+           
             return Response(
                 {'filtered_products': product_results.data},
                 status=status.HTTP_200_OK

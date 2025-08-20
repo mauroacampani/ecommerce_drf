@@ -132,22 +132,39 @@ const Checkout = ({
     const renderShipping = () => {
         if (shipping && shipping !== null && shipping !== undefined) {
             return (
-                <div className='mb-5'>
+                <div className='radio-group space-y-3'>
                     {
                         shipping.map((shipping_option, index) => (
-                            <div key={index}>
-                                <input
-                                    onChange={e => onChange(e)}
-                                    value={shipping_option.id}
-                                    name='shipping_id'
-                                    type='radio'
-                                    required
-                                />
-                                <label className='ml-4'>
-                                    {shipping_option.name} - ${shipping_option.price} ({shipping_option.time_to_delivery})
+                            // <div key={index}>
+                            //     <input
+                            //         onChange={e => onChange(e)}
+                            //         value={shipping_option.id}
+                            //         name='shipping_id'
+                            //         type='radio'
+                            //         required
+                            //     />
+                            //     <label className='ml-4'>
+                            //         {shipping_option.name} - ${shipping_option.price} ({shipping_option.time_to_delivery})
+                            //     </label>
+                            // </div>
+                             <div key={index}>
+                              <input
+                              onChange={e => onChange(e)}
+                                     value={shipping_option.id}
+                                     name='shipping_id'
+                                     type='radio'
+                                     required
+                                     className="radio-custom"/>
+                                <label for="option1" className="">
+                                    {/* <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-gray-300 mr-3 transition-all duration-200">
+                                        <div className="radio-selected w-2.5 h-2.5 rounded-full bg-indigo-600 opacity-0 transform scale-0 transition-all duration-200"></div>
+                                    </div> */}
+                                    <span className="ml-4 text-gray-700 font-medium">{shipping_option.name}</span>
+                                    <div className="ml-6 px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-800 hidden md:inline-flex">${shipping_option.price}</div>
+                                     <div className="ml-6 px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-800 hidden md:inline-flex">{shipping_option.time_to_delivery}</div>
                                 </label>
                             </div>
-                        ))
+                          ))
                     }
                 </div>
             );
@@ -192,7 +209,7 @@ const Checkout = ({
               type="submit"
               className="w-full bg-green-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-green-500"
             >
-              Place Order
+              Finalizar compra
             </button>
           )}
         </div>
@@ -293,6 +310,7 @@ const Checkout = ({
               buy={buy}
               renderShipping={renderShipping}
               total_amount={total_amount}
+              original_price={original_price}
               total_after_coupon={total_after_coupon}
               total_compare_amount={total_compare_amount}
               estimated_tax={estimated_tax}

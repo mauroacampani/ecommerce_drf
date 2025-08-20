@@ -106,6 +106,7 @@ const Shop = ({
 
     const onSubmit = e => {
       e.preventDefault()
+
       get_filtered_products(category_id, price_range, sortBy , order)
       setFiltered(true)
       console.log(e)

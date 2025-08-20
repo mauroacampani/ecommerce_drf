@@ -17,7 +17,7 @@ const ShippingForm = ({
     renderShipping,
     total_amount,
     total_compare_amount,
-    // estimated_tax,
+    original_price,
     shipping_cost,
     shipping_id,
     shipping,
@@ -87,26 +87,8 @@ const ShippingForm = ({
                 }
           
               
-              <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                <dt className="flex items-center text-sm text-gray-600">
-                  <span>Envío estimado</span>
-                  <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Learn more about how shipping is calculated</span>
-                    <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
-                  </a>
-                </dt>
-                <dd className="text-sm font-medium text-gray-900">{shipping && shipping_id !== 0 ? <>${shipping_cost}</>:<><h6 className="text-red-600">Elige una opcion de envío</h6></>}</dd>
-              </div>
-              {/* <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                <dt className="flex text-sm text-gray-600">
-                  <span>Impuesto estimado</span>
-                  <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Learn more about how tax is calculated</span>
-                    <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
-                  </a>
-                </dt>
-                <dd className="text-sm font-medium text-gray-900">${estimated_tax}</dd>
-              </div> */}
+             
+              
 
               <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                 <dt className="flex text-sm text-gray-600 " >
@@ -118,33 +100,77 @@ const ShippingForm = ({
                 </dt>
                 <dd className="text-sm font-medium text-gray-900 line-through" >${total_compare_amount}</dd>
               </div>
-
               {
                 coupon && 
                 coupon !== null && 
                 coupon !== undefined ?
                 <>
+                
+              <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
+                    <dt className="flex text-sm text-gray-600">
+                    <span>Precio original </span>
+                    <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
+                        <span className="sr-only">Learn more about how tax is calculated</span>
+                        <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
+                    </a>
+                    </dt>
+                    <dd className="text-sm font-medium text-gray-900 line-through">${original_price}</dd>
+                </div>
                 <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                 <dt className="flex text-sm text-gray-600 " >
-                  <span>Total sin cupón</span>
+                  <span>Precion con cupón</span>
                   <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Learn more about how tax is calculated</span>
                     <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
                   </a>
                 </dt>
-                <dd className="text-sm font-medium text-gray-900 line-through" >${total_after_coupon}</dd>
+                <dd className="text-sm font-medium text-gray-900" >${total_after_coupon}</dd>
+              </div>
+              <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
+                <dt className="flex items-center text-sm text-gray-600">
+                  <span>Envío estimado</span>
+                  <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
+                    <span className="sr-only">Learn more about how shipping is calculated</span>
+                    <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
+                  </a>
+                </dt>
+                <dd className="text-sm font-medium text-gray-900">{shipping && shipping_id !== 0 ? <>${shipping_cost}</>:<><h6 className="text-red-600">Elige una opcion de envío</h6></>}</dd>
               </div>
                 <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                    <dt className="text-base font-medium text-gray-900">Total (con cupón)</dt>
+                    <dt className="text-base font-medium text-gray-900">Total a pagar</dt>
                     <dd className="text-base font-medium text-gray-900">${total_amount}</dd>
                 </div> 
                 </>
                     : 
+                <>
                 <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-                    <dt className="text-base font-medium text-gray-900">Total</dt>
+                    <dt className="flex text-sm text-gray-600">
+                    <span>Precio del producto</span>
+                    <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
+                        <span className="sr-only">Learn more about how tax is calculated</span>
+                        <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
+                    </a>
+                    </dt>
+                    <dd className="text-sm font-medium text-gray-900">${original_price}</dd>
+                </div>
+
+                 <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
+                <dt className="flex items-center text-sm text-gray-600">
+                  <span>Envío estimado</span>
+                  <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
+                    <span className="sr-only">Learn more about how shipping is calculated</span>
+                    <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
+                  </a>
+                </dt>
+                <dd className="text-sm font-medium text-gray-900">{shipping && shipping_id !== 0 ? <>${shipping_cost}</>:<><h6 className="text-red-600">Elige una opcion de envío</h6></>}</dd>
+              </div>
+                <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
+                    <dt className="text-base font-medium text-gray-900">Total a pagar</dt>
                     <dd className="text-base font-medium text-gray-900">${total_amount}</dd>
               </div>
+              </>
               }
+              
 
               
             </dl>
